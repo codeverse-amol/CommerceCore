@@ -9,23 +9,13 @@ Login
     <form method='post'>
       {% csrf_token %}
       <table>
-      <tr>
-          <td><label> Username: </label></td>
-          <td><input type="text" name="username" placeholder="Enter Username"> </td>
-      </tr>
-      <tr>
-          <td><label> Password: </label></td>
-          <td><input type="password" name="password" placeholder="Enter Password"> </td>
-      </tr>
-
-      <tr>
-          <td colspan="2"><button class="btn" type="submit">Login</button></td>
-      </tr>
-      
+        {{ form.as_table }}
       </table>
+      <button class="auth-btn login-btn" type="submit">Login</button>
     </form>
     <br>
 
-    <p>Don't have an account?    <a href="{% url 'register_user' %}" class="btn">Sign Up</a></p>
+    <p>Don't have an account?</p>
+    <p><a href="{% url 'register_user' %}" class="auth-btn signup-btn">Sign Up</a></p>
 
 {% endblock %} 
