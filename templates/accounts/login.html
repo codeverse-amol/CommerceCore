@@ -1,22 +1,31 @@
-<!doctype html>
-{% load static %}
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8" />
-    <title>Login to CommerceCore</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-  </head>
-  <body>
+{% extends 'base.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
     <h1>Login to CommerceCore</h1>
     <form method='post'>
       {% csrf_token %}
-      <p>Username: <input type="text" name="username" placeholder="Enter Username"></p>
-      <p>Password: <input type="password" name="password" placeholder="Enter Password"></p>
+      <table>
+      <tr>
+          <td><label> Username: </label></td>
+          <td><input type="text" name="username" placeholder="Enter Username"> </td>
+      </tr>
+      <tr>
+          <td><label> Password: </label></td>
+          <td><input type="password" name="password" placeholder="Enter Password"> </td>
+      </tr>
 
-      <button class="btn" type="submit">Login</button>
+      <tr>
+          <td colspan="2"><button class="btn" type="submit">Login</button></td>
+      </tr>
+      
+      </table>
     </form>
     <br>
 
-    <p>Don't have an account?    <a href="{% url 'register_user' %}">Sign Up</a></p>
-  </body>
-</html>
+    <p>Don't have an account?    <a href="{% url 'register_user' %}" class="btn">Sign Up</a></p>
+
+{% endblock %} 

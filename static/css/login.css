@@ -8,3 +8,7 @@
     cursor: pointer;
     display: inline-block;
 }
+
+.btn:hover {
+    background-color: #1d4ed8;
+}

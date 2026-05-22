@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Register
+{% endblock %}
+
+{% block content %}
+    <h1>Register for CommerceCore</h1>
+    <form method='post'>
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td><label> Username: </label></td>
+                <td><input type="text" name="username" placeholder="Enter Username"> </td>
+            </tr>
+            <tr>
+                <td><label> Email: </label></td>
+                <td><input type="email" name="email" placeholder="Enter Email"> </td>
+            </tr>
+            <tr>
+                <td><label> Password: </label></td>
+                <td><input type="password" name="password" placeholder="Enter Password"> </td>
+            </tr>
+            <tr>
+                <td><label> Confirm Password: </label></td>
+                <td><input type="password" name="confirm_password" placeholder="Confirm Password"> </td>
+            </tr>
+
+            <tr>
+                <td colspan="2"><button class="btn" type="submit">Register</button></td>
+            </tr>
+        </table>
+    <br>
+
+    <p>Don't have an account?    <a href="{% url 'login' %}" class="btn"> Back to Login</a></p>
+{% endblock %}

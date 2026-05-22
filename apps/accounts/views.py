@@ -69,7 +69,7 @@ def register_user(request):
             return redirect('new_user')
     else:
         form = UserForm()
-    return render(request, "accounts/create_user.html", {'form':form})
+    return render(request, "accounts/register.html", {'form':form})
 
 # This view function, register_user, handles the creation of new user accounts. It checks if the request method is POST, and if so, it processes the submitted form data. If the form is valid, it creates a new user object, sets the password using Django's set_password method (which hashes the password), and saves the user to the database. After successful creation, it redirects to the 'new_user' view. If the request method is not POST, it renders an empty user creation form.
 def new_user(request):
