@@ -30,7 +30,7 @@ def login_view(request):
         else:
             return HttpResponse("<h3>Invalid username or password</h3>" \
             "<p><a href='/'>Try Again</a></p>")
-    return render(request, 'registration/login.html')
+    return render(request, 'accounts/login.html')
 
 
 
