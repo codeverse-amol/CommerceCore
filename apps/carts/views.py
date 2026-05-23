@@ -38,7 +38,4 @@ def view_cart(request):
     cart = get_or_create_cart(request.user)
     cart_items = cart.items.all() 
 
-    return render(request, 'app/cart.html', {
-        'cart_items': cart_items
-    })
-
+    return render(request, 'carts/cart.html', {'cart_items': cart_items})

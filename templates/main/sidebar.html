@@ -1,0 +1,56 @@
+<div class="sidebar">
+
+    <h3>CommerceCore</h3>
+
+    <ul>
+
+        <li>
+            <a href="{% url 'dashboard' %}" class="active">
+
+                <i class="bi bi-grid"></i>
+
+                <span>Dashboard</span>
+
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'add_product' %}">
+                <i class="bi bi-plus-circle"></i>
+                <span>Add Product</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'list_products' %}">
+                <i class="bi bi-box"></i>
+                <span>Products</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'view_cart' %}">
+                <i class="bi bi-cart"></i>
+                <span>Cart</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{% url 'placed_order' %}">
+                <i class="bi bi-bag"></i>
+                <span>Orders</span>
+            </a>
+        </li>
+
+    </ul>
+
+    <div class="logout-section">
+
+        <a href="{% url 'logout' %}">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+
+    </div>
+
+</div>

@@ -17,20 +17,22 @@ def placed_orders(request):
         return HttpResponse("Cart is empty")
 
     order = Order.objects.create(user=request.user)
-    total_price = 0
+    total = 0
 
     for item in cart_items:
         OrderItem.objects.create(
             order=order,
             product=item.product,
-            quantity=item.quantity
+            quantity=item.quantity,
+            unit_price=item.product.price
         )
-        total_price += item.product.price * item.quantity
-    order.price = total_price
+        total += item.product.price * item.quantity
+
+    order.total_amount = total
     order.save()
     cart_items.delete()
 
-    return render(request, 'app/order_success.html', {
+    return render(request, 'orders/order_success.html', {
         'order': order
     })
 
@@ -38,6 +40,9 @@ def placed_orders(request):
 
 @login_required
 def order_success(request):
-    return render(request, 'app/order_success.html')
+    return render(request, 'orders/order_success.html')
 
+
+def subtotal(self):
+    return self.quantity * self.unit_price
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Success</title>
+</head>
+<body>
+    <h1>Orders</h1>
+    {% if order %}
+        <p>Order #{{ order.id }} created at {{ order.created_at }}</p>
+        <h2>Items</h2>
+        <table border="1">
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+            {% for item in order.items.all %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unit_price }}</td>
+                <td>{{ item.subtotal }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p>Total Price: {{ order.total_amount }}</p>
+        <p>Your order was placed successfully ✅.</p>
+    {% endif %}
+
+    <p><a href="{% url 'dashboard' %}">Return to Dashboard</a></p>
+    <p><a href="{% url 'list_products' %}">Shop More</a></p>
+</body>
+</html>

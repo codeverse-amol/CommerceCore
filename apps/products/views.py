@@ -18,7 +18,7 @@ def add_category(request):
             return redirect('dashboard')
     else:
         form = CategoryForm()
-    return render(request, "app/addCategory.html", {'form':form})
+    return render(request, "products/addCategory.html", {'form':form})
 
 
 @login_required
@@ -30,7 +30,7 @@ def add_tags(request):
             return redirect('dashboard')
     else:
         form = TagForm()
-    return render(request, "app/addTags.html", {'form':form})
+    return render(request, "products/addTags.html", {'form':form})
 
 
 @login_required
@@ -51,11 +51,11 @@ def add_products(request):
     else:
         form = ProductForm()
 
-    return render(request, "app/addProducts.html", {'form': form})
+    return render(request, "products/addProducts.html", {'form': form})
 
 
 
 @login_required
 def list_products(request):
     products = Product.objects.select_related("category").prefetch_related("tags")
-    return render(request, "app/listProducts.html", {'products':products})
+    return render(request, "products/listProducts.html", {'products':products})
