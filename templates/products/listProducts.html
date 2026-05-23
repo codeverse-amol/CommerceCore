@@ -1,8 +1,11 @@
 <!DOCTYPE html>
+{% load static %}
+
 <html lang="en">
 <head>  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/products.css' %}">
     <title>List Products</title>
 </head>
 <body>
@@ -19,32 +22,50 @@
         {% endfor %}
     </ul> {% endcomment %}
 
-    <table border="1">
-        <tr>
-            <th>User</th>
-            <th>Product Name</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Tags</th>
-            <th>Add to Cart</th>
-        </tr>
+    <div class="products-container">
+
         {% for p in products %}
-        <tr>
-            <td>{{ p.user.username }}</td>
-            <td>{{ p.name }}</td>
-            <td>{{ p.category.name }}</td>
-            <td>{{ p.price }}</td>
-            <td>
-                {% for t in p.tags.all %}
-                    {{ t.name }}{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </td>
-            <td><a href="{% url 'add_to_cart' p.id %}">Add to Cart</a></td>
-        </tr>
+        <div class="product-card">
+
+            {% if p.image %}
+                <img src="{{ p.image.url }}" class="product-image">
+            {% else %}
+                <img src="{% static 'images/no-image.png' %}" class="product-image">
+            {% endif %}
+
+            <div class="product-info">
+
+                <h2>{{ p.name }}</h2>
+
+                <p class="category">
+                    {{ p.category.name }}
+                </p>
+
+                <p class="price">
+                    ₹{{ p.price }}
+                </p>
+
+                <p class="tags">
+                    {% for t in p.tags.all %}
+                        {{ t.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+
+                <p class="seller">
+                    Seller: {{ p.user.username }}
+                </p>
+
+                <a class="cart-btn"
+                href="{% url 'add_to_cart' p.id %}">
+                Add to Cart
+                </a>
+
+            </div>
+
+        </div>
         {% endfor %}
-    </table>
-    <br>
-    <p><a href="{% url 'view_cart' %}">View Cart</a></p>
-    <p><a href="{% url 'dashboard' %}">Return to Dashboard</a></p>
+
+    </div>
+    <div class="links"> <a href="{% url 'view_cart' %}">View Cart</a> <a href="{% url 'dashboard' %}">Dashboard</a> </div>
 </body>
 </html>
