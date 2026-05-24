@@ -1,15 +1,12 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
 
+{% block css %}
+<link rel="stylesheet"
+      href="{% static 'css/cart.css' %}">
+{% endblock %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
-    <title>Cart</title>
-</head>
-<body>
+{% block content %}
 
     {% if message %}
         <p style="color: red;">{{ message }}</p>
@@ -37,12 +34,13 @@
 
                 <p>Quantity: {{ item.quantity }}</p>
 
-                <p>Total:
-                    ₹{{ item.total_price }}
+                <p class="item-total">
+                    Total: ₹{{ item.total_price }}
                 </p>
 
-                <a href="#">Remove</a>
-
+                <a href="{% url 'remove_cart_item' item.id %}">
+                    Remove
+                </a>
             </div>
 
         </div>
@@ -52,7 +50,15 @@
 
     {% else %}
 
-        <p>Your cart is empty.</p>
+        <div class="empty-cart">
+
+            <h2>Your cart is empty</h2>
+
+            <a href="{% url 'list_products' %}">
+                Continue Shopping
+            </a>
+
+        </div>
 
     {% endif %}
 
@@ -72,5 +78,4 @@
 
     </div>
 
-</body>
-</html>
+{% endblock %}

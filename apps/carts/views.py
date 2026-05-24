@@ -39,3 +39,9 @@ def view_cart(request):
     cart_items = cart.items.all() 
 
     return render(request, 'carts/cart.html', {'cart_items': cart_items})
+
+
+
+@property
+def total_price(self):
+    return self.quantity * self.product.price

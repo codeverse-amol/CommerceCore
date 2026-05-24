@@ -1,15 +1,14 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
 
-<html lang="en">
-<head>  
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/products.css' %}">
-    <title>List Products</title>
-</head>
-<body>
-    <h1>List Products</h1>
+{% block css %}
+<link rel="stylesheet"
+      href="{% static 'css/products.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>List Products</h1>
     {% comment %} <ul>
         {% for p in products %}
             <p>
@@ -70,6 +69,8 @@
         {% endfor %}
 
     </div>
-    <div class="links"> <a href="{% url 'view_cart' %}">View Cart</a> <a href="{% url 'dashboard' %}">Dashboard</a> </div>
-</body>
-</html>
+    <div class="links"> 
+        <a href="{% url 'view_cart' %}">View Cart</a> <a href="{% url 'dashboard' %}">Dashboard</a> 
+    </div>
+
+{% endblock %}

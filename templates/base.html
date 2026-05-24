@@ -1,16 +1,75 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% endblock %}</title>
 
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+          href="{% static 'css/base.css' %}">
+
+    {% block css %}{% endblock %}
+
+    <title>CommerceCore</title>
 </head>
+
 <body>
 
-    {% block content %}
-    {% endblock %}
+    <!-- Navbar -->
+    <nav class="navbar">
+
+        <div class="logo">
+            CommerceCore
+        </div>
+
+        <button class="menu-btn"
+                onclick="toggleSidebar()">
+            ☰
+        </button>
+
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+
+        <a href="{% url 'dashboard' %}">
+            Dashboard
+        </a>
+
+        <a href="{% url 'list_products' %}">
+            Products
+        </a>
+
+        <a href="{% url 'view_cart' %}">
+            Cart
+        </a>
+
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+    <script>
+
+        function toggleSidebar(){
+
+            document
+                .getElementById("sidebar")
+                .classList.toggle("active");
+
+        }
+
+    </script>
 
 </body>
 </html>
