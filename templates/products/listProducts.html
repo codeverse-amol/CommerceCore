@@ -51,9 +51,13 @@
                     {% endfor %}
                 </p>
 
-                <p class="seller">
-                    Seller: {{ p.user.username }}
+                <p class="description">
+                    {{ p.description }}
                 </p>
+
+                {% comment %} <p class="seller">
+                    Seller: {{ p.user.username }}
+                </p> {% endcomment %}
 
                 <a class="cart-btn"
                 href="{% url 'add_to_cart' p.id %}">

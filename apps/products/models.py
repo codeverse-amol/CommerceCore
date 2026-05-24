@@ -24,14 +24,15 @@ class Tag(models.Model):
 # Product → ManyToMany → Tag
 # Product → ManyToOne → User (Seller)
 # Product → ManyToMany → Cart
-class Product(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
-    
+class Product(models.Model):    
     name = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     tags = models.ManyToManyField(Tag, related_name='products')
     image = models.ImageField(upload_to='products/', null=True, blank=True)
+    stock = models.PositiveIntegerField(default=0)
+    description = models.TextField()
+    # seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='products')
 
 
     def __str__(self):

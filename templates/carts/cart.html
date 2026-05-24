@@ -6,41 +6,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/carts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
     <title>Cart</title>
 </head>
 <body>
-    <h1>Your Cart</h1>
+
     {% if message %}
         <p style="color: red;">{{ message }}</p>
     {% endif %}
 
     {% if cart_items %}
-        <table border="1">
-            <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-            {% for item in cart_items %}
-            <tr>
-                <td>{{ item.product.name }}</td>
-                <td>{{ item.product.price }}</td>
-                <td>{{ item.quantity }}</td>
-                <td>{{ item.quantity|add:0 }}</td>
 
-            </tr>
-            {% endfor %}
-        </table>
-        <p>
-            <a href="{% url 'placed_order' %}">Place Order</a>
-        </p>
+    <div class="cart-container">
+
+        <h1>Your Cart</h1>
+
+        {% for item in cart_items %}
+        <div class="cart-item">
+
+            {% if item.product.image %}
+                <img src="{{ item.product.image.url }}"
+                     class="cart-image">
+            {% endif %}
+
+            <div class="cart-info">
+
+                <h2>{{ item.product.name }}</h2>
+
+                <p>₹{{ item.product.price }}</p>
+
+                <p>Quantity: {{ item.quantity }}</p>
+
+                <p>Total:
+                    ₹{{ item.total_price }}
+                </p>
+
+                <a href="#">Remove</a>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
     {% else %}
+
         <p>Your cart is empty.</p>
+
     {% endif %}
 
-    <p><a href="{% url 'list_products' %}">Continue Shopping</a></p>
-    <p><a href="{% url 'dashboard' %}">Return to Dashboard</a></p>
+    <div class="cart-links">
+
+        <a href="{% url 'placed_order' %}">Place Order</a>
+
+
+        <a href="{% url 'list_products' %}">
+            Continue Shopping
+        </a>
+
+        <a href="{% url 'dashboard' %}">
+            Return to Dashboard
+        </a>
+
+
+    </div>
+
 </body>
 </html>
