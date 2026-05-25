@@ -72,3 +72,12 @@ h1{
 
     margin: 0 10px;
 }
+
+
+.cart-summary{
+    width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+}

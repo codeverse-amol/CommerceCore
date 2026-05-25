@@ -34,7 +34,7 @@
 
                 <p>Quantity: {{ item.quantity }}</p>
 
-                <p class="item-total">
+                <p class="total-price">
                     Total: ₹{{ item.total_price }}
                 </p>
 
@@ -45,6 +45,19 @@
 
         </div>
         {% endfor %}
+        <div class="cart-summary">
+
+            <h3>Order Summary</h3>
+
+            <p>
+                Subtotal: ₹{{ subtotal }}
+            </p>
+
+            <h2>
+                Total: ₹{{ subtotal }}
+            </h2>
+
+        </div>
 
     </div>
 

@@ -23,7 +23,7 @@ def add_to_cart(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     cart_item, created = CartItem.objects.get_or_create(
         cart=cart,
-        product=product
+        product=product,
     )
 
     if not created:
@@ -37,11 +37,22 @@ def add_to_cart(request, product_id):
 def view_cart(request):
     cart = get_or_create_cart(request.user)
     cart_items = cart.items.all() 
+    subtotal = sum(item.total_price for item in cart_items)
 
-    return render(request, 'carts/cart.html', {'cart_items': cart_items})
+    return render(request, 'carts/cart.html', {'cart_items': cart_items,'subtotal': subtotal})
 
 
 
-@property
-def total_price(self):
-    return self.quantity * self.product.price
+
+
+@login_required
+def remove_from_cart(request, cart_item_id):
+    cart = get_or_create_cart(request.user)
+    cart_item = get_object_or_404(CartItem, pk=cart_item_id, cart=cart)
+
+    if cart_item:
+        cart_item.delete()
+
+    return redirect('view_cart')
+
+
