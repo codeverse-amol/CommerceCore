@@ -59,3 +59,16 @@ def add_products(request):
 def list_products(request):
     products = Product.objects.select_related("category").prefetch_related("tags")
     return render(request, "products/listProducts.html", {'products':products})
+
+
+
+
+def product_detail(request, id):
+
+    product = Product.objects.get(id=id)
+
+    return render(
+        request,
+        'products/product_detail.html',
+        {'product': product}
+    )

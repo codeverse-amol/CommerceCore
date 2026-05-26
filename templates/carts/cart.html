@@ -28,14 +28,20 @@
 
             <div class="cart-info">
 
-                <h2>{{ item.product.name }}</h2>
+                <p class="product-name">
+                    {{ item.product.name }}
+                </p>
 
-                <p>₹{{ item.product.price }}</p>
+                <p class="product-price">
+                    Price: ₹{{ item.product.price }}
+                </p>
 
-                <p>Quantity: {{ item.quantity }}</p>
+                <p class="quantity">
+                    Quantity: {{ item.quantity }}
+                </p>
 
-                <p class="total-price">
-                    Total: ₹{{ item.total_price }}
+                <p class="item-total">
+                    Total Price: ₹{{ item.total_price }}
                 </p>
 
                 <a href="{% url 'remove_cart_item' item.id %}">
@@ -47,7 +53,7 @@
         {% endfor %}
         <div class="cart-summary">
 
-            <h3>Order Summary</h3>
+            <h3>Cart Summary</h3>
 
             <p>
                 Subtotal: ₹{{ subtotal }}
