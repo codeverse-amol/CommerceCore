@@ -22,14 +22,32 @@
     <!-- Navbar -->
     <nav class="navbar">
 
-        <div class="logo">
-            CommerceCore
+        <div class="nav-left">
+
+            <div class="logo">
+                CommerceCore
+            </div>
+
+            <button class="menu-btn"
+                    onclick="toggleSidebar()">
+                ☰
+            </button>
+
         </div>
 
-        <button class="menu-btn"
-                onclick="toggleSidebar()">
-            ☰
-        </button>
+        <form action="{% url 'list_products' %}"
+            method="GET"
+            class="search-form">
+
+            <input type="text"
+                name="q"
+                placeholder="Search products">
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
 
     </nav>
 

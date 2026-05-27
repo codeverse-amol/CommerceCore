@@ -22,7 +22,36 @@ body{
     left: 0;
     width: 100%;
 
+    box-sizing: border-box;
+
     z-index: 1000;
+}
+
+.nav-left{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.search-form{
+    display: flex;
+    gap: 10px;
+}
+
+.search-form input{
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: none;
+}
+
+.search-form button{
+    padding: 8px 14px;
+    border: none;
+
+    border-radius: 6px;
+
+    background: white;
+    cursor: pointer;
 }
 
 .logo{
@@ -61,6 +90,10 @@ body{
     left: 0;
 }
 
+.sidebar.active + .main-content{
+    margin-left: 250px;
+}
+
 .sidebar a{
     display: block;
 
@@ -77,5 +110,6 @@ body{
 /* Main Content */
 
 .main-content{
+    transition: 0.3s;
     padding: 90px 30px 30px 30px;
 }

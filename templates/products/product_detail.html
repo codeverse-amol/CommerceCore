@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
+
+{% block css %}
+<link rel="stylesheet"
+      href="{% static 'css/product_detail.css' %}">
+{% endblock %}
 
 <div class="product-detail-container">
 
     <div class="product-image-section">
 
-        <img src="{{ product.image.url }}">
+        <img src="{{ product.image.url }}"
+             class="product-detail-image">
 
     </div>
 
@@ -14,15 +20,25 @@
 
         <h1>{{ product.name }}</h1>
 
-        <p>{{ product.category.name }}</p>
+        <p class="category">
+            {{ product.category.name }}
+        </p>
 
-        <h2>₹{{ product.price }}</h2>
+        <h2 class="price">
+            ₹{{ product.price }}
+        </h2>
 
-        <p>{{ product.description }}</p>
+        <p class="description">
+            {{ product.description }}
+        </p>
 
-        <p>Stock left: {{ product.stock }}</p>
+        <p class="stock">
+            Stock left: {{ product.stock }}
+        </p>
 
-        <a href="{% url 'add_to_cart' product.id %}">
+
+        <a href="{% url 'add_to_cart' product.id %}"
+           class="cart-btn">
             Add to Cart
         </a>
 
