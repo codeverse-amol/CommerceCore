@@ -114,3 +114,30 @@ h1{
     font-size: 15px;
 }
 
+
+.empty-cart{
+
+    font-size: 15px;
+    text-align: center;
+    padding: 40px;
+}
+
+
+.quantity-controls{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin-top: 10px;
+}
+
+.quantity-controls a{
+    background: #111827;
+    color: white;
+
+    padding: 5px 12px;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+}

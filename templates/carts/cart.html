@@ -36,9 +36,19 @@
                     Price: ₹{{ item.product.price }}
                 </p>
 
-                <p class="quantity">
-                    Quantity: {{ item.quantity }}
-                </p>
+            <div class="quantity-controls">
+
+                <a href="{% url 'decrease_quantity' item.id %}">
+                    -
+                </a>
+
+                <span>{{ item.quantity }}</span>
+
+                <a href="{% url 'increase_quantity' item.id %}">
+                    +
+                </a>
+
+            </div>
 
                 <p class="item-total">
                     Total Price: ₹{{ item.total_price }}
@@ -73,18 +83,14 @@
 
             <h2>Your cart is empty</h2>
 
-            <a href="{% url 'list_products' %}">
-                Continue Shopping
-            </a>
-
         </div>
 
     {% endif %}
 
     <div class="cart-links">
-
+        {% if cart_items %}
         <a href="{% url 'placed_order' %}">Place Order</a>
-
+        {% endif %}
 
         <a href="{% url 'list_products' %}">
             Continue Shopping

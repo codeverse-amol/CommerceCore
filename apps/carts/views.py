@@ -1,9 +1,7 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+
 from apps.carts.models import CartItem, Product, Cart
-from django.contrib.auth.models import User
 
 
 
@@ -42,7 +40,29 @@ def view_cart(request):
     return render(request, 'carts/cart.html', {'cart_items': cart_items,'subtotal': subtotal})
 
 
+@login_required
+def increase_quantity(request, item_id):
+    cart = get_or_create_cart(request.user)
+    cart_item = get_object_or_404(CartItem, pk=item_id, cart=cart)
 
+    if cart_item.quantity < cart_item.product.stock:
+        cart_item.quantity += 1
+        cart_item.save()
+    return redirect('view_cart')
+
+@login_required
+def decrease_quantity(request, item_id):
+    cart = get_or_create_cart(request.user)
+    cart_item = get_object_or_404(CartItem, pk=item_id, cart=cart)
+
+
+    cart_item.quantity -= 1
+    if cart_item.quantity <= 0:
+        cart_item.delete()
+    else:
+        cart_item.save()
+
+    return redirect('view_cart')
 
 
 @login_required
