@@ -28,14 +28,16 @@ def add_to_cart(request, product_id):
         cart_item.quantity += 1
         cart_item.save()
 
+    
     return redirect('view_cart')
 
 
 @login_required
 def view_cart(request):
     cart = get_or_create_cart(request.user)
-    cart_items = cart.items.all() 
+    cart_items = cart.items.all()       # type: ignore
     subtotal = sum(item.total_price for item in cart_items)
+
 
     return render(request, 'carts/cart.html', {'cart_items': cart_items,'subtotal': subtotal})
 
@@ -49,6 +51,7 @@ def increase_quantity(request, item_id):
         cart_item.quantity += 1
         cart_item.save()
     return redirect('view_cart')
+
 
 @login_required
 def decrease_quantity(request, item_id):

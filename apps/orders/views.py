@@ -7,42 +7,56 @@ from apps.carts.views import get_or_create_cart
 
 # Create your views here.
 
-
 @login_required
 def placed_orders(request):
+
     cart = get_or_create_cart(request.user)
-    cart_items = cart.items.all()
+    cart_items = cart.items.all()   # type: ignore
 
     if not cart_items.exists():
         return HttpResponse("Cart is empty")
 
-    order = Order.objects.create(user=request.user)
-    total = 0
+    subtotal = sum(item.total_price for item in cart_items)
+
+    order = Order.objects.create(
+        user=request.user,
+        total_amount=subtotal
+    )
 
     for item in cart_items:
+
         OrderItem.objects.create(
             order=order,
             product=item.product,
             quantity=item.quantity,
-            unit_price=item.product.price
+            price_at_purchase=item.product.price,
+            total_price=item.total_price
         )
-        total += item.product.price * item.quantity
 
-    order.total_amount = total
-    order.save()
+        item.product.stock -= item.quantity
+        item.product.save()
+
     cart_items.delete()
 
-    return render(request, 'orders/order_success.html', {
-        'order': order
-    })
+    return render(request, 'orders/order_success.html', {'order': order})
 
+
+
+# @login_required
+# def order_success(request):
+#     return render(request, 'orders/order_success.html')
+
+
+# my_orders
+@login_required
+def my_orders(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+
+    return render(request, 'orders/my_orders.html', {'orders':orders})
 
 
 @login_required
-def order_success(request):
-    return render(request, 'orders/order_success.html')
-
-
-def subtotal(self):
-    return self.quantity * self.unit_price
-
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    
+    return render(request, 'orders/order_detail.html', {'order':order})

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="order-detail-container">
+
+    <h1>
+        Order #{{ order.id }}
+    </h1>
+
+    <p>
+        Status:
+        {{ order.status }}
+    </p>
+
+    <p>
+        Date:
+        {{ order.created_at }}
+    </p>
+
+    <p>
+        Total:
+        ₹{{ order.total_amount }}
+    </p>
+
+    <hr>
+
+    <h2>Products</h2>
+
+    {% for item in order.items.all %}
+
+    <div class="order-item">
+
+        <h3>
+            {{ item.product.name }}
+        </h3>
+
+        <p>
+            Quantity:
+            {{ item.quantity }}
+        </p>
+
+        <p>
+            Price:
+            ₹{{ item.price_at_purchase }}
+        </p>
+
+        <p>
+            Subtotal:
+            ₹{{ item.total_price }}
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

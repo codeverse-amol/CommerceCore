@@ -6,8 +6,10 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('order/', views.placed_orders, name='placed_order'),
-    path('order/success/', views.order_success, name='order_success'),
+    path('place/', views.placed_orders, name='placed_order'),
+    # path('success/', views.order_success, name='order_success'),
+    path('my-orders/', views.my_orders, name='my_orders'),
+    path('<int:order_id>/', views.order_detail, name='order_detail'),
 
 ]
 
