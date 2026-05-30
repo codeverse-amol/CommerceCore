@@ -23,44 +23,7 @@
             <!-- Navbar -->
             {% include 'main/navbar.html' %}
 
-            <!-- Dynamic Content -->
-            <div class="content">
-
-                <div class="dashboard-grid">
-
-                    <div class="card">
-
-                        <h3>Total Products</h3>
-                        <p>120</p>
-
-                    </div>
-
-                    <div class="card">
-
-                        <h3>Total Orders</h3>
-                        <p>45</p>
-
-                    </div>
-
-                    <div class="card">
-
-                        <h3>Total Revenue</h3>
-                        <p>₹25,000</p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="chart-container">
-
-                    <canvas id="salesChart"></canvas>
-
-                </div>
-                {% include 'components/table.html' %}
-
-
-
+            
                 {% block content %}
                 {% endblock %}
 
@@ -69,28 +32,5 @@
         </div>
     </div>
 
-<script>
-
-const ctx = document.getElementById('salesChart');
-
-new Chart(ctx, {
-
-    type: 'bar',
-
-    data: {
-
-        labels: ['Jan', 'Feb', 'Mar', 'Apr'],
-
-        datasets: [{
-            label: 'Sales',
-            data: [12, 19, 7, 15]
-        }]
-
-    }
-
-});
-
-</script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

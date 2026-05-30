@@ -18,40 +18,55 @@
 </head>
 
 <body>
-
-    <!-- Navbar -->
     <nav class="navbar">
 
+        <!-- Left -->
         <div class="nav-left">
-
-            <div class="logo">
-                CommerceCore
-            </div>
 
             <button class="menu-btn"
                     onclick="toggleSidebar()">
                 ☰
             </button>
 
+        <a href="{% url 'dashboard' %}" class="logo">
+            CommerceCore
+        </a>
+
         </div>
 
-        <form action="{% url 'list_products' %}"
-            method="GET"
-            class="search-form">
+        <!-- Center -->
+        <div class="nav-center">
 
-            <input type="text"
-                name="q"
-                placeholder="Search products"
-                value="{{ request.GET.q }}">
+            <form action="{% url 'list_products' %}"
+                method="GET"
+                class="search-form">
 
-            <button type="submit">
-                Search
-            </button>
+                <input type="text"
+                    name="q"
+                    placeholder="Search products"
+                    value="{{ request.GET.q }}">
 
-        </form>
+                <button type="submit">
+                    Search
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- Right -->
+        <div class="nav-right">
+
+            <a href="{% url 'view_cart' %}"
+            class="cart-link">
+
+                🛒 Cart
+
+            </a>
+
+        </div>
 
     </nav>
-
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
 

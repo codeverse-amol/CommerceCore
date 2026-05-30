@@ -24,7 +24,10 @@
 
             <p>
                 Status:
-                {{ order.status }}
+
+                <span class="order-status {{ order.status|lower }}">
+                    {{ order.status }}
+                </span>
             </p>
 
             <p>
