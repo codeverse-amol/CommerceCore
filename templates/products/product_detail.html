@@ -32,15 +32,30 @@
             {{ product.description }}
         </p>
 
-        <p class="stock">
-            Stock left: {{ product.stock }}
-        </p>
+        {% if product.stock > 0 %}
 
+            {% comment %} <p class="stock in-stock">
+                In Stock: {{ product.stock }}
+            </p> {% endcomment %}
 
-        <a href="{% url 'add_to_cart' product.id %}"
-           class="cart-btn">
+            <a href="{% url 'add_to_cart' product.id %}"
+            class="cart-btn">
+
             Add to Cart
-        </a>
+
+            </a>
+
+        {% else %}
+
+            <p class="stock out-stock">
+                Out of Stock
+            </p>
+
+            <button class="disabled-btn">
+                Add to Cart
+            </button>
+
+        {% endif %}
 
     </div>
 

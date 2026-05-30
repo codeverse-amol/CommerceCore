@@ -63,3 +63,27 @@
     color: gray;
     font-size: 18px;
 }
+
+
+.in-stock{
+    color: green;
+    font-weight: bold;
+}
+
+.out-stock{
+    color: red;
+    font-weight: bold;
+}
+
+.disabled-btn{
+    background: gray;
+    color: white;
+
+    border: none;
+
+    padding: 14px 24px;
+
+    border-radius: 8px;
+
+    cursor: not-allowed;
+}

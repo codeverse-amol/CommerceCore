@@ -44,9 +44,19 @@
 
                 <span>{{ item.quantity }}</span>
 
-                <a href="{% url 'increase_quantity' item.id %}">
-                    +
-                </a>
+                {% if item.quantity < item.product.stock %}
+
+                    <a href="{% url 'increase_quantity' item.id %}">
+                        +
+                    </a>
+
+                {% else %}
+
+                    <span class="disabled-plus">
+                        +
+                    </span>
+
+                {% endif %}
 
             </div>
 

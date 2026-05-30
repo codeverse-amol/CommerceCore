@@ -141,3 +141,17 @@ h1{
 
     text-decoration: none;
 }
+
+
+.disabled-plus{
+    background: gray;
+    color: white;
+
+    padding: 5px 12px;
+
+    border-radius: 6px;
+
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}

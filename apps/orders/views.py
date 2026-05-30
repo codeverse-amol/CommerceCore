@@ -15,7 +15,15 @@ def placed_orders(request):
 
     if not cart_items.exists():
         return HttpResponse("Cart is empty")
+    
+    for item in cart_items:
 
+        if item.quantity > item.product.stock:
+
+            return HttpResponse(
+                f"{item.product.name} only has {item.product.stock} items left"
+            )
+        
     subtotal = sum(item.total_price for item in cart_items)
 
     order = Order.objects.create(
@@ -35,6 +43,7 @@ def placed_orders(request):
 
         item.product.stock -= item.quantity
         item.product.save()
+        
 
     cart_items.delete()
 

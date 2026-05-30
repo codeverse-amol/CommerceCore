@@ -4,22 +4,14 @@
 {% block css %}
 <link rel="stylesheet"
       href="{% static 'css/products.css' %}">
+
+<link rel="stylesheet"
+      href="{% static 'css/product_detail.css' %}">
 {% endblock %}
 
 {% block content %}
 
 <h1>List Products</h1>
-    {% comment %} <ul>
-        {% for p in products %}
-            <p>
-                {{ p.name }} - {{ p.category.name }} - {{ p.price }}<br>
-                Tags:
-                {% for t in p.tags.all %}
-                    {{ t.name }},
-                {% endfor %}
-            </p>        
-        {% endfor %}
-    </ul> {% endcomment %}
 
     <div class="products-container">
 
@@ -56,14 +48,28 @@
                     {{ p.description }}
                 </p>
 
-                {% comment %} <p class="seller">
-                    Seller: {{ p.user.username }}
-                </p> {% endcomment %}
 
-                <a class="cart-btn"
-                href="{% url 'add_to_cart' p.id %}">
-                Add to Cart
-                </a>
+                {% if p.stock > 0 %}
+
+                    <a href="{% url 'add_to_cart' p.id %}"
+                    class="cart-btn">
+
+                    Add to Cart
+
+                    </a>
+
+                {% else %}
+
+                    <p class="stock out-stock">
+                        Out of Stock
+                    </p>
+
+                    <button class="disabled-btn">
+                        Add to Cart
+                    </button>
+
+            {% endif %}
+
 
             </div>
 
