@@ -1,5 +1,5 @@
 from django import forms
-from apps.accounts.models import Profile
+from apps.accounts.models import Profile, Address
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
@@ -28,6 +28,18 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         # fields = "__all__"
         exclude = ['user']
+
+
+
+
+
+class AddressForm(forms.ModelForm):
+
+    class Meta:
+        model = Address
+        exclude = ['user']
+
+
 
 
 # User → Django View → ORM → SQL → MySQL → Data → ORM → View → Template

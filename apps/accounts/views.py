@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from apps.accounts.forms import ProfileForm, UserForm
-from apps.accounts.models import Profile
+from apps.accounts.forms import ProfileForm, UserForm, AddressForm
+from apps.accounts.models import Profile, Address
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -47,40 +47,6 @@ def login_view(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 
-
-
-
-
-
-@login_required
-def index(request):
-    return render(request, "accounts/index.html")
-
-
-
-
-
-
-@login_required
-def create_profile(request):
-    if request.method=="POST":
-        form = ProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            profile = form.save(commit=False)
-            # Associate the profile with the currently logged-in user
-            profile.user = request.user
-            profile.save()
-            return redirect('homepage')
-    else:
-        form = ProfileForm()
-    return render(request, "accounts/create_profile.html", {'form':form})
-
-
-@login_required
-def user_profile(request):
-    profile = get_object_or_404(Profile, user=request.user)
-    return render(request, "accounts/profile.html", {'profile': profile})
-
 # LOGOUT VIEW
 @login_required 
 def logout_view(request):
@@ -90,4 +56,70 @@ def logout_view(request):
     logout(request)            # Django's built-in logout function also clears the session data
 
     return redirect('login')
+
+
+
+
+@login_required
+def create_profile(request):
+
+    if hasattr(request.user, 'profile'):
+        return redirect('profile')
+    
+    if request.method=="POST":
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            # Associate the profile with the currently logged-in user
+            profile.user = request.user
+            profile.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm()
+    return render(request, "accounts/create_profile.html", {'form':form})
+
+
+
+
+@login_required
+def profile_view(request):
+
+    if not hasattr(request.user, 'profile'):
+        return redirect('create_profile')
+    
+    profile = request.user.profile
+
+    return render(request, "accounts/profile.html", {'profile': profile})
+
+
+
+@login_required
+def edit_profile(request):
+
+    profile = request.user.profile
+    form = ProfileForm(instance=profile)
+
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+        
+    return render(request, "accounts/edit_profile.html", {'profile': profile, 'form': form})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

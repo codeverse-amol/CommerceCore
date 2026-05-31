@@ -69,3 +69,22 @@ def order_detail(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
     
     return render(request, 'orders/order_detail.html', {'order':order})
+
+
+
+@login_required
+def cancel_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    print(order.status)
+    if order.status != 'PENDING':
+        return HttpResponse("Only pending orders can be cancelled.")
+    
+
+    for item in order.items.all():
+        item.product.stock += item.quantity
+        item.product.save()
+    order.status = 'CANCELLED'
+    order.save()
+    print("Order cancelled")
+
+    return redirect('my_orders')

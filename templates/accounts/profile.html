@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet"
+      href="{% static 'css/profile.css' %}">
+{% endblock %}
+{% block content %}
+
+<div class="profile-container">
+
+    <h1>My Profile</h1>
+
+    {% if profile.profileImage %}
+
+        <img src="{{ profile.profileImage.url }}"
+             class="profile-image">
+
+    {% endif %}
+
+    <div class="profile-info">
+
+        <p>
+            <strong>Full Name:</strong>
+            {{ profile.fullName }}
+        </p>
+
+        <p>
+            <strong>Phone:</strong>
+            {{ profile.phone }}
+        </p>
+
+        <p>
+            <strong>Address:</strong>
+            {{ profile.address }}
+        </p>
+
+        <p>
+            <strong>Gender:</strong>
+            {{ profile.get_gender_display }}
+        </p>
+
+    </div>
+
+    <a href="{% url 'edit_profile' %}"
+       class="edit-profile-btn">
+
+       Edit Profile
+
+    </a>
+
+</div>
+
+{% endblock %}

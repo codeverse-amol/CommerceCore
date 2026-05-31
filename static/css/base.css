@@ -136,6 +136,22 @@ body{
 }
 
 
+/* Order Detail */
+.details-btn{
+    display: inline-block;
+
+    margin-top: 10px;
+
+    background: #2563eb;
+    color: white;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+}
+
 
 /* Order Status */
 .order-status{
@@ -166,3 +182,24 @@ body{
 .cancelled{
     background: red;
 }
+
+
+.cancel-btn{
+    display: inline-block;
+
+    margin-top: 10px;
+
+    background: red;
+    color: white;
+
+    padding: 10px 16px;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+}
+
+.cancel-btn:hover{
+    background: darkred;
+}
+

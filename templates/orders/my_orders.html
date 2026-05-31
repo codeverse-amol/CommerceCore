@@ -35,10 +35,24 @@
                 ₹{{ order.total_amount }}
             </p>
 
-            <a href="{% url 'order_detail' order.id %}">
+            <p>
+            <a href="{% url 'order_detail' order.id %}" class="details-btn">
                 View Details
             </a>
+            </p>
 
+            <p>
+            {% if order.status == 'PENDING' %}
+
+                <a href="{% url 'cancel_order' order.id %}"
+                class="cancel-btn">
+
+                Cancel Order
+
+                </a>
+
+            {% endif %}
+            </p>
         </div>
 
         {% endfor %}
