@@ -1,14 +1,8 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load static %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/orders.css' %}">
-    <title>Order Success</title>
-</head>
-<body>
+{% block content %}
+<div>
     <h1>Orders</h1>
     {% if order %}
         <p>Order #{{ order.id }} created at {{ order.created_at }}</p>
@@ -33,7 +27,11 @@
         <p>Your order was placed successfully ✅.</p>
     {% endif %}
 
+    {% if not order %}
+        <p>No order details available.</p>
+    {% endif %}
+
     <p><a href="{% url 'dashboard' %}">Return to Dashboard</a></p>
     <p><a href="{% url 'list_products' %}">Shop More</a></p>
-</body>
-</html>
+</div>
+{% endblock %}

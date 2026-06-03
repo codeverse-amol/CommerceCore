@@ -14,7 +14,7 @@ def placed_orders(request):
     cart_items = cart.items.all()   # type: ignore
 
     if not cart_items.exists():
-        return HttpResponse("Cart is empty")
+        return redirect("my_orders")
     
     for item in cart_items:
 
