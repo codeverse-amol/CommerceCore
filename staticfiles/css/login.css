@@ -1,0 +1,40 @@
+/* Common Button Style */
+.auth-btn{
+    font-family: "Open Sans", Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+
+    padding: 10px 25px;
+    border-radius: 10px;
+
+    text-decoration: none;
+    display: inline-block;
+
+    transition: 0.2s ease;
+}
+
+
+/* Log In Button */
+.login-btn{
+    color: #ffffff;
+    background-color: black;
+
+    border: 1px solid #4b5263;
+}
+
+.login-btn:hover{
+    background-color: rgb(93, 89, 89);
+}
+
+
+/* Sign Up Button */
+.signup-btn{
+    color: #0d1117;
+    background-color: #2de26d;
+
+    border: none;
+}
+
+.signup-btn:hover{
+    background-color: #25c55d;
+}

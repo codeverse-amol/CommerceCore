@@ -1,0 +1,19 @@
+.pending{
+    background: orange;
+}
+
+.paid{
+    background: blue;
+}
+
+.shipped{
+    background: purple;
+}
+
+.delivered{
+    background: green;
+}
+
+.cancelled{
+    background: red;
+}
