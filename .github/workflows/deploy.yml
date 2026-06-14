@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Deploy To EC2
         uses: appleboy/ssh-action@v1.0.3
@@ -22,5 +22,5 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
 
           script: |
-            cd /root/CommerceCore
+            cd /home/ec2-user/CommerceCore
             ./deploy.sh
