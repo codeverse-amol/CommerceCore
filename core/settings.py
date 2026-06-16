@@ -11,25 +11,26 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wde@gxsb)w@b722vg$p92=4^%(eii@y-ga+udnddbf^x1&2$73'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
-ALLOWED_HOSTS = ['34.224.102.35', 
-                 'ec2-34-224-102-35.compute-1.amazonaws.com',
-                 'localhost',
-                 '127.0.0.1'
-                ]   
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") 
 
 
 # Application definition
@@ -96,16 +97,15 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 # MySQL database configuration
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'commerceCore_db',
-        'USER': 'root',
-        'PASSWORD': 'test@1234',
-        'HOST': 'localhost',
-        'PORT': '3306',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
     }
 }
-
 
 
 # Password validation
