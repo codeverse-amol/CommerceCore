@@ -1,11 +1,27 @@
 {% load static %}
-    <h1>Register for CommerceCore</h1>
-    <form method='post'>
-        {% csrf_token %}
-        <table>
-            {{ form.as_table }}
-        </table>
-        <button class="auth-btn signup-btn" type="submit">Register</button>
-    <br>
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
 
-    <p><a href="{% url 'login' %}" class="auth-btn login-btn"> Back to Login</a></p>
+<div class="register-container">
+
+    <h1 class="register-title">
+        Create Your Account
+    </h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button class="register-btn" type="submit">
+            Register
+        </button>
+    </form>
+
+    <div class="register-footer">
+        <p>Already have an account?</p>
+
+        <a href="{% url 'login' %}" class="back-login-btn">
+            Login
+        </a>
+    </div>
+
+</div>

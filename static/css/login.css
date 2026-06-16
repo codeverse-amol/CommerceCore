@@ -1,40 +1,131 @@
-/* Common Button Style */
-.auth-btn{
-    font-family: "Open Sans", Arial, sans-serif;
-    font-size: 18px;
-    font-weight: 700;
+/* Page */
 
-    padding: 10px 25px;
-    border-radius: 10px;
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6f9;
+}
 
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card */
+
+.auth-card {
+    width: 450px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+/* Title */
+
+.auth-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1f2937;
+    font-size: 2rem;
+}
+
+/* Form */
+
+.auth-form {
+    width: 100%;
+}
+
+.auth-form th {
+    text-align: left;
+    padding-bottom: 8px;
+    color: #374151;
+}
+
+.auth-form td {
+    padding-bottom: 18px;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+/* Common Button */
+
+.auth-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    text-align: center;
     text-decoration: none;
-    display: inline-block;
-
-    transition: 0.2s ease;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.2s;
+    box-sizing: border-box;
 }
 
+/* Login */
 
-/* Log In Button */
-.login-btn{
-    color: #ffffff;
-    background-color: black;
-
-    border: 1px solid #4b5263;
-}
-
-.login-btn:hover{
-    background-color: rgb(93, 89, 89);
-}
-
-
-/* Sign Up Button */
-.signup-btn{
-    color: #0d1117;
-    background-color: #2de26d;
-
+.login-btn {
+    background: #2563eb;
+    color: white;
     border: none;
+    cursor: pointer;
 }
 
-.signup-btn:hover{
-    background-color: #25c55d;
+.login-btn:hover {
+    background: #1d4ed8;
+}
+
+/* Signup */
+
+.signup-btn {
+    background: #22c55e;
+    color: white;
+}
+
+.signup-btn:hover {
+    background: #16a34a;
+}
+
+/* Footer */
+
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.auth-footer p {
+    margin-bottom: 12px;
+    color: #6b7280;
+}
+
+/* Help text */
+
+.helptext {
+    display: block;
+    font-size: 13px;
+    color: #6b7280;
+    margin-top: 5px;
+}
+
+.errorlist {
+    color: #dc2626;
+    list-style: none;
+    padding: 0;
+    margin: 5px 0;
 }
