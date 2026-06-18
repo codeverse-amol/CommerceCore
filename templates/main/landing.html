@@ -1,17 +1,74 @@
-<!doctype html>
 {% load static %}
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8" />
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CommerceCore</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-  </head>
-  <body>
-    <h1>Welcome to CommerceCore !</h1>
-    <h1>Login or Register if you don't have an account</h1>
 
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+</head>
+<body>
 
-    <a href="{% url 'login' %}" class="auth-btn login-btn">Login</a> 
-    <a href="{% url 'register_user' %}" class="auth-btn signup-btn">Register</a>
-  </body>
+    <nav class="navbar">
+        <div class="logo">CommerceCore</div>
+    </nav>
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>Welcome to CommerceCore</h1>
+
+            <p class="tagline">
+                Modern E-Commerce Platform Built with Django
+            </p>
+
+            <p class="description">
+                Browse products, manage your cart, place orders, and
+                experience a complete e-commerce solution powered by
+                Django and MySQL.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="{% url 'login' %}" class="btn login-btn">
+                    Login
+                </a>
+
+                <a href="{% url 'register_user' %}" class="btn register-btn">
+                    Register
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="features">
+
+        <div class="feature-card">
+            <h3>Products</h3>
+            <p>Browse and search products quickly and efficiently.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Shopping Cart</h3>
+            <p>Add products, update quantities, and manage purchases.</p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Orders</h3>
+            <p>Place orders and track your purchase history.</p>
+        </div>
+
+    </section>
+
+    <footer>
+        <p>© 2026 CommerceCore. Built with Django & MySQL.</p>
+    </footer>
+
+</body>
 </html>
