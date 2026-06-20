@@ -108,11 +108,40 @@ def edit_profile(request):
     return render(request, "accounts/edit_profile.html", {'profile': profile, 'form': form})
 
 
+@login_required
+def add_address(request):
+
+    address = Address.objects.all()
+
+    if request.method == "POST":
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+
+            # first address automatically default
+            if not Address.objects.filter(user=request.user).exists():
+                address.is_default = True
+
+            address.save()
+
+            return redirect('my_addresses')
+        
+
+    else:
+        form = AddressForm()
+
+    
+    return render(request, 'accounts/add_address.html', {'form': form})
 
 
 
+@login_required
+def my_addresses(request):
 
+    addresses = Address.objects.filter(user=request.user)
 
+    return render(request, 'accounts/my_addresses.html', {'addresses': addresses})
 
 
 

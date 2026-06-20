@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="profile-container">
+
+    <h1>Add Address</h1>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit"
+                class="details-btn">
+
+            Save Address
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

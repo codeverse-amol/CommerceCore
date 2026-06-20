@@ -5,7 +5,12 @@ from django.contrib.auth.models import User
 
 # Profile → OneToOne → User
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='profile'
+    )
+    
     fullName = models.CharField(max_length=20)
     phone = models.CharField(max_length=15)
     address = models.CharField(max_length=100)
@@ -29,19 +34,12 @@ class Address(models.Model):
     )
 
     full_name = models.CharField(max_length=100)
-
     phone = models.CharField(max_length=15)
-
     address_line = models.CharField(max_length=255)
-
     city = models.CharField(max_length=100)
-
     state = models.CharField(max_length=100)
-
     postal_code = models.CharField(max_length=10)
-
     is_default = models.BooleanField(default=False)
-
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
