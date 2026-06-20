@@ -145,6 +145,70 @@ def my_addresses(request):
 
 
 
+@login_required
+def edit_address(request, address_id):
+
+    address = get_object_or_404(Address, user=request.user, id=address_id)
+
+    if request.method == "POST":
+        form = AddressForm(request.POST, instance=address)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('my_addresses')
+        
+    else:
+        form = AddressForm(instance=address)
+
+    return render(request, 'accounts/edit_address.html', {'form': form})
+
+
+
+@login_required
+def delete_address(request, address_id):
+
+    address = get_object_or_404(
+        Address,
+        id=address_id,
+        user=request.user
+    )
+
+    if request.method == "POST":
+
+        address.delete()
+
+        return redirect('my_addresses')
+
+    return render(
+        request,
+        'accounts/delete_address.html',
+        {'address': address}
+    )
+
+
+
+@login_required
+def set_default_address(request, address_id):
+
+    Address.objects.filter(
+        user=request.user
+    ).update(
+        is_default=False
+    )
+
+    address = get_object_or_404(
+        Address,
+        id=address_id,
+        user=request.user
+    )
+
+    address.is_default = True
+    address.save()
+
+    return redirect('my_addresses')
+
+
 
 
 

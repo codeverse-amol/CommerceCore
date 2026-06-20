@@ -11,38 +11,43 @@
     </a>
 
     <br><br>
-
     {% for address in addresses %}
 
-        <div class="address-card">
+    <div class="address-card">
 
-            <h3>{{ address.full_name }}</h3>
+        <h3>{{ address.full_name }}</h3>
 
-            <p>{{ address.phone }}</p>
-            
-            <p>{{ address.address_line }}</p>
+        <p>{{ address.phone }}</p>
 
-            <p>
-                {{ address.city }},
-                {{ address.state }}
-            </p>
+        <p>{{ address.address_line }}</p>
 
-            <p>{{ address.postal_code }}</p>
+        <p>{{ address.city }}, {{ address.state }}</p>
 
-            {% if address.is_default %}
-                <p><strong>Default Address</strong></p>
-            {% endif %}
+        <p>{{ address.pincode }}</p>
 
-        </div>
+        {% if address.is_default %}
+            <strong>Default Address</strong>
+        {% endif %}
 
-        <hr>
+        <br><br>
 
-    {% empty %}
+        <a href="{% url 'edit_address' address.id %}">
+            Edit
+        </a>
 
-        <p>No addresses added yet.</p>
+        <a href="{% url 'delete_address' address.id %}">
+            Delete
+        </a>
+
+        {% if not address.is_default %}
+            <a href="{% url 'set_default_address' address.id %}">
+                Make Default
+            </a>
+        {% endif %}
+
+    </div>
 
     {% endfor %}
-
 </div>
 
 {% endblock %}
