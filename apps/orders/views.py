@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from apps.orders.models import Order, OrderItem
 from apps.carts.views import get_or_create_cart
 
+from apps.orders.models import Order, OrderItem
+from apps.accounts.models import Address
 # Create your views here.
 
 @login_required
@@ -26,9 +27,17 @@ def placed_orders(request):
         
     subtotal = sum(item.total_price for item in cart_items)
 
+    address_id = request.POST.get("address_id")
+    delivery_address = get_object_or_404(
+        Address,
+        id=address_id,
+        user=request.user
+    )
+
     order = Order.objects.create(
         user=request.user,
-        total_amount=subtotal
+        total_amount=subtotal,
+        delivery_address=delivery_address
     )
 
     for item in cart_items:
@@ -88,3 +97,34 @@ def cancel_order(request, order_id):
     print("Order cancelled")
 
     return redirect('my_orders')
+
+
+
+
+@login_required
+def checkout(request):
+
+    cart = get_or_create_cart(request.user)
+
+    cart_items = cart.items.all()
+
+    subtotal = sum(item.total_price for item in cart_items)
+
+    addresses = Address.objects.filter(user=request.user)
+    print(Address.objects.filter(user=request.user))
+    return render(
+    request,
+    'orders/checkout.html',
+    {
+        'cart_items': cart_items,
+        'subtotal': subtotal,
+        'addresses': addresses
+    }
+)
+
+
+
+
+
+
+

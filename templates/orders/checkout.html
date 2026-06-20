@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Checkout</h1>
+<p>Total Addresses: {{ addresses|length }}</p>
+<h2>Select Delivery Address</h2>
+
+<form method="POST"
+      action="{% url 'placed_order' %}">
+
+    {% csrf_token %}
+
+    {% for address in addresses %}
+
+        <div>
+
+            <input
+                type="radio"
+                name="address_id"
+                value="{{ address.id }}"
+                {% if address.is_default %}
+                    checked
+                {% endif %}
+            >
+
+            {{ address.full_name }}
+            -
+            {{ address.address_line }}
+            -
+            {{ address.city }}
+
+        </div>
+
+    {% endfor %}
+
+    <hr>
+
+    <h2>Order Summary</h2>
+
+    {% for item in cart_items %}
+
+        <p>
+            {{ item.product.name }}
+            ×
+            {{ item.quantity }}
+        </p>
+
+    {% endfor %}
+
+    <h3>Total: ₹{{ subtotal }}</h3>
+
+    <button type="submit">
+
+        Place Order
+
+    </button>
+
+</form>
+
+
+{% endblock %}

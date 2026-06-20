@@ -99,7 +99,9 @@
 
     <div class="cart-links">
         {% if cart_items %}
-        <a href="{% url 'placed_order' %}">Place Order</a>
+        <a href="{% url 'checkout' %}">
+            Checkout
+        </a>
         {% endif %}
 
         <a href="{% url 'list_products' %}">

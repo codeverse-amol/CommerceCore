@@ -18,6 +18,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'user',
+        'delivery_address',
         'total_amount',
         'status',
         'created_at'
