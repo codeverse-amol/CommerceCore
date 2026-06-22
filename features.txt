@@ -17,3 +17,50 @@ Completed:
 ✅ Order Detail Page
 ✅ Order Cancellation
 ✅ Delivery Address Tracking
+
+
+
+
+
+
+Accounts Module
+
+✅ Register
+✅ Login
+✅ Logout
+✅ Profile Create
+✅ Profile View
+✅ Profile Edit
+
+Address Module
+
+✅ Add Address
+✅ View Addresses
+✅ Edit Address
+✅ Delete Address
+✅ Set Default Address
+
+Product Module
+
+✅ Product Listing
+✅ Product Detail
+✅ Search Products
+✅ Stock Handling
+
+Cart Module
+
+✅ Add to Cart
+✅ Update Quantity
+✅ Remove Item
+✅ Cart Summary
+
+Order Module
+
+✅ Checkout Page
+✅ Select Delivery Address
+✅ Place Order
+✅ Order History
+✅ Order Details
+✅ Cancel Order
+✅ Stock Deduction
+✅ Address Stored With Order

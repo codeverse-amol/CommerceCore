@@ -203,3 +203,36 @@ body{
     background: darkred;
 }
 
+
+
+/* Order Timeline */
+
+.timeline{
+    margin: 20px 0;
+}
+
+.timeline-step{
+    padding: 12px 16px;
+    margin-bottom: 10px;
+
+    border-left: 4px solid #d1d5db;
+
+    background: #f3f4f6;
+
+    color: #6b7280;
+    font-weight: bold;
+}
+
+.timeline-step.active{
+    border-left: 4px solid green;
+
+    background: #ecfdf5;
+    color: green;
+}
+
+.timeline-step.cancelled{
+    border-left: 4px solid red;
+
+    background: #fef2f2;
+    color: red;
+}

@@ -26,8 +26,61 @@
         Total:
         ₹{{ order.total_amount }}
     </p>
+    <hr>
+
+    <h2>Order Timeline</h2>
+    {% if order.status == 'CANCELLED' %}
+
+    <div class="timeline">
+
+        <div class="timeline-step active">
+            ✓ Order Placed
+        </div>
+
+        <div class="timeline-step cancelled">
+            ✕ Cancelled
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="timeline">
+
+        <div class="timeline-step active">
+            ✓ Order Placed
+        </div>
+
+        <div class="timeline-step
+            {% if order.status == 'CONFIRMED' or order.status == 'SHIPPED' or order.status == 'DELIVERED' %}
+                active
+            {% endif %}
+        ">
+            ✓ Confirmed
+        </div>
+
+        <div class="timeline-step
+            {% if order.status == 'SHIPPED' or order.status == 'DELIVERED' %}
+                active
+            {% endif %}
+        ">
+            ✓ Shipped
+        </div>
+
+        <div class="timeline-step
+            {% if order.status == 'DELIVERED' %}
+                active
+            {% endif %}
+        ">
+            ✓ Delivered
+        </div>
+
+    </div>
+
+    {% endif %}
 
     <hr>
+
     <h3>Delivery Address</h3>
 
     <p>
