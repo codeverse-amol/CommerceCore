@@ -9,6 +9,8 @@ from apps.products.forms import CategoryForm, ProductForm, TagForm
 from apps.products.models import Product
 # from django.contrib.auth.models import User
 
+from django.core.paginator import Paginator
+
 # Create your views here.
 
 
@@ -73,10 +75,14 @@ def list_products(request):
 
     # Q objects allow us to perform complex queries with OR conditions. In this case, we are filtering products based on whether the query string is contained in the product's name, description, category name, or tag names. The distinct() method is used to ensure that we don't get duplicate products in the results when a product matches multiple conditions.
 
-    else:
-        products = Product.objects.all()
-        
-    return render(request, "products/listProducts.html", {'products':products})
+    
+    paginator = Paginator(products, 8)
+
+    page_number = request.GET.get('page')
+
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "products/listProducts.html", {'products':products, 'page_obj':page_obj})
 
 
 

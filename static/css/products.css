@@ -119,3 +119,35 @@ h1{
     }
 
 }
+
+
+
+
+.pagination{
+
+    margin-top: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+}
+
+.pagination a{
+
+    text-decoration: none;
+
+    padding: 10px 15px;
+
+    background: #111827;
+
+    color: white;
+
+    border-radius: 6px;
+}
+
+.pagination span{
+
+    font-weight: bold;
+}
