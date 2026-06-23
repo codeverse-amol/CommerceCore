@@ -61,4 +61,94 @@
 
 </div>
 
+
+<hr>
+<div class="rating-summary">
+
+    {% if avg_rating %}
+
+        <h2>
+            ⭐ {{ avg_rating|floatformat:1 }}/5
+        </h2>
+
+        <p>
+            {{ review_count }} Review{{ review_count|pluralize }}
+        </p>
+
+    {% else %}
+
+        <p>
+            No ratings yet.
+        </p>
+
+    {% endif %}
+
+</div>
+
+
+<div class="reviews-section">
+
+    <h2>Customer Reviews</h2>
+
+    {% for review in reviews %}
+
+    <div class="review-card">
+
+        <h4>
+            {{ review.user.username }}
+        </h4>
+
+        <div class="star-rating">
+
+            {% for i in "12345" %}
+
+                {% if forloop.counter <= review.rating %}
+                    ⭐
+                {% endif %}
+
+            {% endfor %}
+
+        </div>
+
+        <p class="review-comment">
+            {{ review.comment }}
+        </p>
+
+    </div>
+
+    {% empty %}
+
+    <p>No reviews yet.</p>
+
+    {% endfor %}
+
+</div>
+
+
+
+
+
+
+<div class="review-form-section">
+
+    <h2>Add Review</h2>
+
+    <form method="POST"
+          action="{% url 'add_review' product.id %}">
+
+        {% csrf_token %}
+
+        {{ review_form.as_p }}
+
+        <button type="submit"
+                class="cart-btn">
+
+            Submit Review
+
+        </button>
+
+    </form>
+
+</div>
+
 {% endblock %}

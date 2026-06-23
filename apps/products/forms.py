@@ -1,5 +1,5 @@
 from django import forms
-from .models import Category, Product, Tag
+from .models import Category, Product, Tag, Review
 from django.contrib.auth.models import User
 
 
@@ -24,6 +24,17 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'price', 'category', 'tags']
+
+
+
+class ReviewForm(forms.ModelForm):
+
+    class Meta:
+        model = Review
+        fields = ['rating', 'comment']
+
+
+
 
 
 # User → Django View → ORM → SQL → MySQL → Data → ORM → View → Template
