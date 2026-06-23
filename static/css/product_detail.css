@@ -87,3 +87,109 @@
 
     cursor: not-allowed;
 }
+
+
+/* =========================
+   Reviews Section
+========================= */
+
+.reviews-section{
+    margin-top: 40px;
+}
+
+.rating-summary{
+    background: #f8fafc;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    margin-bottom: 30px;
+
+    text-align: center;
+}
+
+.rating-summary h2{
+    color: #2563eb;
+
+    margin-bottom: 5px;
+}
+
+.review-card{
+
+    background: white;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+}
+
+.review-card h4{
+
+    margin-bottom: 10px;
+
+    color: #111827;
+
+}
+
+.star-rating{
+
+    color: #f59e0b;
+
+    font-size: 20px;
+
+    margin-bottom: 10px;
+
+}
+
+.review-comment{
+
+    color: #374151;
+
+    line-height: 1.6;
+
+}
+
+
+
+.review-form-section{
+
+    margin-top: 40px;
+
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+}
+
+.review-form-section h2{
+
+    margin-bottom: 20px;
+
+}
+
+.review-form-section input,
+.review-form-section textarea{
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 15px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 8px;
+
+    box-sizing: border-box;
+
+}
