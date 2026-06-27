@@ -25,6 +25,8 @@ urlpatterns = [
     path('carts/', include('apps.carts.urls')),
     path('orders/', include('apps.orders.urls')),
     path('main/', include('apps.main.urls')),
+
+    path("api/", include("apps.api.urls")),
 ]
 
 from django.conf import settings

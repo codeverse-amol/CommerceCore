@@ -12,6 +12,7 @@ __pycache__/
 
 # documents
 docs/
+debug_practice/
 
 # static files
 staticfiles/
