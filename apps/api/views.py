@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly
 from apps.products.models import Product
 from apps.api.serializers import ProductSerializer
 
@@ -19,13 +19,23 @@ class ProductViewSet(ModelViewSet):
 
     serializer_class = ProductSerializer
 
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
+    # permission_classes = [AllowAny]
+    # permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 
+'''
+Difference between IsAuthenticated and IsAdminUser?
 
+| IsAuthenticated                  | IsAdminUser                                    |
+| -------------------------------- | ---------------------------------------------- |
+| User must be logged in           | User must be logged in **and** `is_staff=True` |
+| Any authenticated user           | Only admin/staff users                         |
+| Returns 401 if not authenticated | Returns 403 if authenticated but not staff     |
 
-
+'''
 
 
 
