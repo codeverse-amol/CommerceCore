@@ -10,6 +10,9 @@ from .permissions import ReadOnlyPermission, OnlyPostPermission
 from apps.products.models import Product
 from apps.api.serializers import ProductSerializer
 
+from .pagination import ProductPagination
+from .pagination import ProductLimitOffsetPagination
+from .pagination import ProductCursorPagination
 # Create your views here.
 
 
@@ -21,14 +24,23 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
 
     # permission_classes = [IsAuthenticated]
-    # permission_classes = [AllowAny]
+    permission_classes = [AllowAny]
     # permission_classes = [IsAdminUser]
     # permission_classes = [IsAuthenticatedOrReadOnly]
 
     # permission_classes = [ReadOnlyPermission]
-    permission_classes = [OnlyPostPermission]
+    # permission_classes = [OnlyPostPermission]
+
+    # pagination_class = ProductPagination
+    # pagination_class = ProductLimitOffsetPagination
+    pagination_class = ProductCursorPagination
 
 
+
+
+
+
+    
 
 '''
 Difference between IsAuthenticated and IsAdminUser?
