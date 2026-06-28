@@ -1,7 +1,7 @@
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+# from rest_framework.views import APIView
+# from rest_framework.generics import GenericAPIView
+# from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.viewsets import ModelViewSet
 
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly
@@ -10,9 +10,14 @@ from .permissions import ReadOnlyPermission, OnlyPostPermission
 from apps.products.models import Product
 from apps.api.serializers import ProductSerializer
 
-from .pagination import ProductPagination
-from .pagination import ProductLimitOffsetPagination
+# from .pagination import ProductPagination
+# from .pagination import ProductLimitOffsetPagination
 from .pagination import ProductCursorPagination
+
+
+# from django_filters.rest_framework import DjangoFilterBackend
+from .filters import ProductFilter
+
 # Create your views here.
 
 
@@ -37,9 +42,22 @@ class ProductViewSet(ModelViewSet):
 
 
 
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = [
+    #     "category",
+    #     "stock",
+    #     "price",
+    # ]
+
+    filterset_class = ProductFilter
 
 
 
+
+
+
+
+    
     
 
 '''
