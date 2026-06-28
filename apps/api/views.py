@@ -1,13 +1,14 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.viewsets import ModelViewSet
+
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly
+from .permissions import ReadOnlyPermission, OnlyPostPermission
+
 from apps.products.models import Product
 from apps.api.serializers import ProductSerializer
-
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
-
-from rest_framework.viewsets import ModelViewSet
 
 # Create your views here.
 
@@ -22,7 +23,10 @@ class ProductViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
     # permission_classes = [AllowAny]
     # permission_classes = [IsAdminUser]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsAuthenticatedOrReadOnly]
+
+    # permission_classes = [ReadOnlyPermission]
+    permission_classes = [OnlyPostPermission]
 
 
 
