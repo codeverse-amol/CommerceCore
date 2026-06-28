@@ -19,7 +19,6 @@ class ProductLimitOffsetPagination(LimitOffsetPagination):
     max_limit = 20
 
 
-
 class ProductCursorPagination(CursorPagination):
 
     page_size = 5

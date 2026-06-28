@@ -1,10 +1,16 @@
 from rest_framework.response import Response
+
 # from rest_framework.views import APIView
 # from rest_framework.generics import GenericAPIView
 # from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.viewsets import ModelViewSet
 
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (
+    IsAuthenticated,
+    AllowAny,
+    IsAdminUser,
+    IsAuthenticatedOrReadOnly,
+)
 from .permissions import ReadOnlyPermission, OnlyPostPermission
 
 from apps.products.models import Product
@@ -15,11 +21,12 @@ from apps.api.serializers import ProductSerializer
 from .pagination import ProductCursorPagination
 
 
-# from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend
 from .filters import ProductFilter
 
-# Create your views here.
+from rest_framework.filters import SearchFilter, OrderingFilter
 
+# Create your views here.
 
 
 class ProductViewSet(ModelViewSet):
@@ -40,8 +47,6 @@ class ProductViewSet(ModelViewSet):
     # pagination_class = ProductLimitOffsetPagination
     pagination_class = ProductCursorPagination
 
-
-
     # filter_backends = [DjangoFilterBackend]
     # filterset_fields = [
     #     "category",
@@ -49,18 +54,34 @@ class ProductViewSet(ModelViewSet):
     #     "price",
     # ]
 
+    filter_backends = [
+        DjangoFilterBackend,
+        SearchFilter,
+        OrderingFilter,
+    ]
+
     filterset_class = ProductFilter
 
+    search_fields = [
+        "name",
+        "category__name",
+        "tags__name",
+    ]
 
+    ordering_fields = [
+        "price",
+        "stock",
+        "name",
+        "id",
+    ]
 
-
+    ordering = ["id"]
 
 
 
     
-    
 
-'''
+"""
 Difference between IsAuthenticated and IsAdminUser?
 
 | IsAuthenticated                  | IsAdminUser                                    |
@@ -69,19 +90,12 @@ Difference between IsAuthenticated and IsAdminUser?
 | Any authenticated user           | Only admin/staff users                         |
 | Returns 401 if not authenticated | Returns 403 if authenticated but not staff     |
 
-'''
-
-
-
-
-
-
+"""
 
 
 # class ProductListAPIView(ListAPIView):
 #     queryset = Product.objects.all()
 #     serializer_class = ProductSerializer
-
 
 
 # class ProductDetailAPIView(RetrieveAPIView):
@@ -102,7 +116,6 @@ Difference between IsAuthenticated and IsAdminUser?
 #     serializer_class = ProductSerializer
 
 
-
 # | Generic View      | HTTP Method    | Purpose                |
 # | ----------------- | -------------- | ---------------------- |
 # | `ListAPIView`     | `GET`          | Get all records        |
@@ -110,10 +123,6 @@ Difference between IsAuthenticated and IsAdminUser?
 # | `CreateAPIView`   | `POST`         | Create new record      |
 # | `UpdateAPIView`   | `PUT`, `PATCH` | Update existing record |
 # | `DestroyAPIView`  | `DELETE`       | Delete record          |
-
-
-
-
 
 
 # class ProductGenericAPIView(GenericAPIView):
@@ -126,11 +135,6 @@ Difference between IsAuthenticated and IsAdminUser?
 #         serializer = self.get_serializer(self.get_queryset(), many=True)
 
 #         return Response(serializer.data)
-    
-
-
-
-
 
 
 # class ProductListAPIView(APIView):
@@ -140,7 +144,7 @@ Difference between IsAuthenticated and IsAdminUser?
 #         serializer = ProductSerializer(products, many=True)
 
 #         return Response(serializer.data, status=200)
-    
+
 
 # class HelloAPIView(APIView):
 #     def get(self, request):
@@ -148,7 +152,3 @@ Difference between IsAuthenticated and IsAdminUser?
 #             "message": "Hello from APIView",
 #             "framework": "Django REST Framework"
 #         })
-    
-
-
-
