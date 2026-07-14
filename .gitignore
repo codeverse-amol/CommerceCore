@@ -11,7 +11,7 @@ __pycache__/
 *.pem
 
 # documents
-docs/
+docs-o/
 debug_practice/
 
 # static files

@@ -32,7 +32,9 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 if not SECRET_KEY:
-    raise ValueError("SECRET_KEY environment variable is missing.")
+    raise RuntimeError(
+        "SECRET_KEY environment variable is not set."
+    )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
