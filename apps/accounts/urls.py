@@ -28,8 +28,7 @@ urlpatterns = [
         views.set_default_address,
         name='set_default_address'
     ),
-
-    path("test-error/", views.test_error)
+    
 ]
 
 
