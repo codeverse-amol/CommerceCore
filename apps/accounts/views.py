@@ -215,4 +215,5 @@ def set_default_address(request, address_id):
 
 
 
-
+def test_error(request):
+    1 / 0
