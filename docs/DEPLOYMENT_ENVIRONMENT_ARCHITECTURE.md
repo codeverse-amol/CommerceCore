@@ -41,31 +41,31 @@ core/
 
 ```
 base.py
-    │
-    ├── Common settings
-    ├── Installed Apps
-    ├── Middleware
-    ├── Database
-    ├── Templates
-    ├── Static Files
-    ├── Logging
-    └── REST Framework
+    
+    ── Common settings
+    ── Installed Apps
+    ── Middleware
+    ── Database
+    ── Templates
+    ── Static Files
+    ── Logging
+    ── REST Framework
 ```
 
 ```
 development.py
-        │
-        ├── from .base import *
-        ├── DEBUG=True
-        └── Development-only settings
+        
+     ── from .base import *
+     ── DEBUG=True
+     ── Development-only settings
 ```
 
 ```
 production.py
-        │
-        ├── from .base import *
-        ├── DEBUG=False
-        └── Production security settings
+        
+     ── from .base import *
+     ── DEBUG=False
+     ── Production security settings
 ```
 
 ---
