@@ -40,13 +40,15 @@ if not SECRET_KEY:
     )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+# Do not define DEBUG here
 
-ALLOWED_HOSTS = [
-    host.strip() 
-    for host in os.getenv("ALLOWED_HOSTS", "").split(",")
-    if host.strip()
-]
+
+# Moved this to each environment i.e development and production.
+# ALLOWED_HOSTS = [
+#     host.strip() 
+#     for host in os.getenv("ALLOWED_HOSTS", "").split(",")
+#     if host.strip()
+# ]
 
 
 # Application definition
@@ -72,6 +74,8 @@ INSTALLED_APPS = [
     # filters
     "django_filters",
     "drf_spectacular",
+    # django-storages
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -172,9 +176,6 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 LOGIN_URL = "login"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
-
 
 REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
@@ -254,21 +255,3 @@ X_FRAME_OPTIONS = "DENY"
 
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
-
-
-# --------------------------------------------------
-# Production Settings
-# --------------------------------------------------
-
-if not DEBUG:
-
-    # Secure cookies (enable after HTTPS is configured)
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-
-    # Prevent JavaScript from accessing cookies
-    SESSION_COOKIE_HTTPONLY = True
-    CSRF_COOKIE_HTTPONLY = True
-
-    # Tell Django it is behind a reverse proxy (Nginx)
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

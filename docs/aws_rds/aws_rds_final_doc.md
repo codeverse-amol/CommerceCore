@@ -655,4 +655,5 @@ If a deployment introduces schema changes or data corruption, a manual snapshot 
 - Django connects to RDS through environment variables.
 - Automated backups and manual snapshots improve disaster recovery.
 - Point-in-Time Recovery minimizes data loss.
-- This architecture closely matches production deployments used in modern Django applications.
+- This architecture closely matches production deployments used in modern Django applications.git add .
+git commit -m "Configure Amazon S3 media storage"
