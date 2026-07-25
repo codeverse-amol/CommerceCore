@@ -17,6 +17,9 @@ debug_practice/
 # static files
 staticfiles/
 
+# media
+media/
+
 # Distribution / packaging
 .Python
 build/
