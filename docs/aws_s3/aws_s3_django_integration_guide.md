@@ -66,21 +66,70 @@ Before starting S3 integration, you should already have:
 
 ## 2. Architecture at a Glance
 
-```mermaid
-flowchart LR
-    U["Browser / Client"] -->|HTTPS - app pages/API| EC2["EC2: Nginx + Gunicorn + Django"]
-    U -->|HTTPS - static/media assets| CF["CloudFront CDN"]
-    CF -->|Origin fetch on cache miss, via OAC| S3[("S3 Bucket
-    media / static")]
-    EC2 -->|SQL| RDS[("RDS - PostgreSQL")]
-    EC2 -->|boto3 / django-storages
-    PutObject on upload| S3
+**Plain-text version** (renders in any editor, no Mermaid support needed):
+
+```
+                    Internet
+                        │
+                        ▼
+                Route 53 / Domain
+                        │
+                        ▼
+                  CloudFront (CDN)
+                        │
+          ┌─────────────┴─────────────┐
+          │                           │
+          ▼                           ▼
+     EC2 (Nginx)                Private S3 Bucket
+          │                           ▲
+          ▼                           │
+     Gunicorn                    django-storages
+          │                           │
+          ▼                           │
+     Django Project ──────────────────┘
+          │
+          ▼
+      Amazon RDS
 ```
 
-- **EC2** serves the Django app itself (HTML, API responses).
-- **S3** stores uploaded media (and optionally static files) — durable, decoupled from compute.
-- **CloudFront** sits in front of S3 as a CDN, caching objects at edge locations close to users and hiding the bucket from direct public access.
-- **RDS** stores relational data, including the *path/key* to each S3 object (never the file itself).
+**Rendered version:**
+
+```mermaid
+flowchart TD
+    NET["Internet"] --> R53["Route 53 / Domain"]
+    R53 --> CF["CloudFront (CDN)"]
+
+    CF -->|dynamic app requests| NGINX["Nginx (EC2)"]
+    CF -->|cached static/media, via OAC| S3[("Private S3 Bucket
+    commercecore-media")]
+
+    NGINX --> GUNI["Gunicorn"]
+    GUNI --> DJ["Django Project"]
+
+    DJ --> RDS[("Amazon RDS")]
+    DJ -->|django-storages / boto3
+    writes uploads| S3
+```
+
+- **Route 53** resolves your domain to the CloudFront distribution (or directly to EC2/ALB if you're not routing app traffic through CloudFront).
+- **CloudFront** sits in front of both EC2 and S3 — one distribution, two origins/behaviors: the default behavior forwards dynamic requests to EC2 (Nginx), while a path pattern (e.g. `/media/*`, `/static/*`) routes to the S3 origin via OAC.
+- **EC2** runs the request/response stack in layers: **Nginx** (reverse proxy, TLS termination, static file passthrough) → **Gunicorn** (WSGI process manager) → **Django** (application logic).
+- **S3** stores uploaded media as private objects — durable, decoupled from compute, never exposed directly to the internet.
+- **RDS** stores relational data, including the *path/key* to each S3 object (never the file itself — see §11.5 for why this separation matters).
+
+### 2.1 AWS Services Used
+
+| Service | Purpose |
+|---|---|
+| Amazon EC2 | Hosts the Django application (Nginx + Gunicorn + Django) |
+| Amazon RDS | Stores relational data |
+| Amazon S3 | Stores uploaded media (private bucket) |
+| CloudFront | CDN — caches and delivers media globally |
+| IAM | Secure, least-privilege AWS access for the app |
+| Origin Access Control (OAC) | Lets CloudFront — and only CloudFront — read the private S3 bucket |
+| Route 53 | DNS resolution for the custom domain |
+
+> **Your actual CommerceCore deployment**, for reference: bucket `commercecore-media` (private), CloudFront domain `d3mwhkx1k5fsh6.cloudfront.net`. Elsewhere in this guide the bucket is named `commercecore-media-prod` as a *reusable naming convention* (with an environment suffix, for projects that run separate dev/staging/prod buckets) — swap in your real bucket name when following the commands.
 
 ---
 
@@ -438,7 +487,25 @@ aws s3api get-object --bucket commercecore-media-prod --key media/products/shoe.
 
 ### 10.4 Lifecycle Rules
 
-Automate cost management over time — e.g. move noncurrent versions to cheaper storage, or expire them:
+Automate cost management over time. Two common rule types:
+
+**1. Transition current versions to cheaper storage after N days** — e.g. move product images that are rarely re-requested to Standard-IA after 30 days:
+
+```json
+{
+  "Rules": [
+    {
+      "ID": "CommerceCore-Standard-IA-Demo",
+      "Status": "Enabled",
+      "Transitions": [
+        { "Days": 30, "StorageClass": "STANDARD_IA" }
+      ]
+    }
+  ]
+}
+```
+
+**2. Expire noncurrent (old) versions** — since versioning (§4.3) keeps every prior version by default, this prevents storage cost from creeping up indefinitely:
 
 ```json
 {
@@ -469,6 +536,8 @@ Automate cost management over time — e.g. move noncurrent versions to cheaper 
 - Set `CacheControl` headers (already in §6.4) so CloudFront/browsers cache aggressively and reduce origin hits.
 - Use lifecycle rules to expire old object *versions*, not just current objects, or versioning storage cost creeps up silently.
 - Watch CloudFront data transfer — it's usually cheaper than S3 direct transfer for repeat-read content.
+- Set up **AWS Budgets** to alert on spend thresholds before they surprise you.
+- Review **Cost Explorer** periodically to see which service (S3 storage, S3 requests, or CloudFront transfer) is actually driving cost — don't optimize blind.
 
 ### 10.7 Security Best Practices Checklist
 
@@ -522,9 +591,89 @@ sequenceDiagram
     end
 ```
 
-### 11.3 High-Level Production Architecture
+Note: this is the flow for **media/static assets only**. A dynamic page request follows a different path — see §11.3.
 
-See the diagram in §2 — EC2 (Django) talks to RDS for data and to S3 for object storage; the browser talks to EC2 for pages/API and to CloudFront for all static/media assets.
+### 11.3 Request Lifecycle (Full Dynamic Page Request)
+
+§11.1 and §11.2 cover *asset* upload/delivery in isolation. This section traces a full page load end-to-end — e.g. a user opening a product page — showing how the dynamic-request path and the asset path both fire from a single browser action.
+
+```mermaid
+sequenceDiagram
+    participant User as Browser
+    participant R53 as Route 53
+    participant CF as CloudFront
+    participant NGX as Nginx (EC2)
+    participant GUN as Gunicorn
+    participant DJ as Django
+    participant RDS
+    participant S3
+
+    User->>R53: Resolve commercecore.com
+    R53-->>User: CloudFront/EC2 IP
+    User->>CF: GET /products/alienware
+    CF->>NGX: Forward (default behavior, not cacheable)
+    NGX->>GUN: Proxy request
+    GUN->>DJ: WSGI call
+    DJ->>RDS: SELECT product WHERE id=...
+    RDS-->>DJ: Row incl. image key (products/alienware.webp)
+    DJ-->>GUN: Rendered HTML (img src = CloudFront URL)
+    GUN-->>NGX: Response
+    NGX-->>CF: Response
+    CF-->>User: HTML page
+
+    Note over User,S3: Browser then parses the HTML and fires a second request for the image
+    User->>CF: GET /products/alienware.webp
+    CF->>S3: GetObject (cache miss, via OAC)
+    S3-->>CF: Image bytes
+    CF-->>User: Image (now cached at edge)
+```
+
+Two distinct paths, one page load: the **HTML/API path** (always hits Django — not cacheable, since it's per-request dynamic data) and the **asset path** (hits S3 through CloudFront — highly cacheable, since `products/alienware.webp` doesn't change between requests).
+
+### 11.4 High-Level Production Architecture
+
+See the full diagram in §2. Each service has exactly one responsibility — this separation of concerns is the core idea behind the whole setup:
+
+| Service | Responsibility |
+|---|---|
+| Route 53 | DNS — resolve domain to CloudFront/EC2 |
+| CloudFront | Cache and deliver static/media files efficiently; reduce origin (S3) requests |
+| Nginx | Reverse proxy, TLS termination, sits in front of Gunicorn |
+| Gunicorn | Execute Django (WSGI process manager) |
+| Django | Application logic |
+| RDS | Store relational data (users, products, orders, **image paths** — not the images) |
+| S3 | Store the actual files (product images, uploaded media) |
+
+### 11.5 Why Separate RDS and S3?
+
+Storing image binaries directly in a relational database is a common early mistake. If every product image (often 1–2 MB+) were stored as a BLOB in MySQL/PostgreSQL alongside users, orders, and products, the database would become large, slow to back up/restore, and expensive to scale — all for data that doesn't need relational querying.
+
+Instead, each layer stores only what it's good at:
+
+```
+RDS (products table)                      S3 (commercecore-media)
+─────────────────────                     ────────────────────────
+id                                        
+name                                      
+price                                     
+image  ──────────────────────────────►    products/alienware.webp
+       (stores only the key/path,              (stores the actual file)
+        never the binary)
+```
+
+**Data flow when Django needs to render the image:**
+
+```
+product.image.url
+        │
+        ▼
+django-storages builds the full URL from AWS_S3_CUSTOM_DOMAIN + the stored key
+        │
+        ▼
+https://d3mwhkx1k5fsh6.cloudfront.net/products/alienware.webp
+```
+
+No image binary ever touches MySQL/PostgreSQL — the database only ever holds the string `products/alienware.webp`. This is the same key/path concept as `MEDIA_URL` in §6.4, and it's why `AWS_S3_FILE_OVERWRITE = False` (§6.4) matters: keys must stay unique and stable, since RDS is holding a reference to that exact key.
 
 ---
 
@@ -569,6 +718,21 @@ Through the `STORAGES["default"]["BACKEND"]` setting (or legacy `DEFAULT_FILE_ST
 
 **What's the benefit of an EC2 instance role over static IAM access keys?**
 Temporary, auto-rotated credentials with no secret to leak or manually rotate — `boto3` fetches them transparently from instance metadata.
+
+### 12.3 CommerceCore Phase 12 — Implementation Snapshot
+
+What's actually live for CommerceCore as of this phase (cross-reference for each item is in parentheses):
+
+- [x] Private S3 bucket, Block Public Access enabled (§4.3)
+- [x] CloudFront CDN in front of S3 via Origin Access Control (§8.3)
+- [x] IAM least-privilege access — no root credentials used (§5)
+- [x] AWS credentials via environment variables, never committed (§6.2–6.3)
+- [x] `django-storages` + `boto3` integration (§6.1, §6.4)
+- [x] S3 Versioning enabled on `commercecore-media` (§4.3, §10.3)
+- [x] Lifecycle rule transitioning objects to Standard-IA after 30 days (§10.4)
+- [x] Unique filenames via `AWS_S3_FILE_OVERWRITE = False` (§6.4)
+- [x] Presigned URLs tested and verified to expire correctly (§10.2) — not used for product images, since those go through CloudFront instead
+- [x] Direct S3 URLs confirmed blocked (403); CloudFront URLs confirmed working (§10.1)
 
 ---
 
