@@ -16,7 +16,7 @@ Redis stands for:
 
 That name is basically its architecture diagram in three words:
 
-- **Remote** → it's a separate, standalone server process — not a Python library you `import`.
+- **Remote** → it's a separate, standalone server process — not a Python library that, you `import`.
 - **Dictionary** → it stores everything as **Key → Value** pairs.
 - **Server** → it listens for network connections and responds to commands.
 
@@ -90,11 +90,11 @@ Conceptually, it looks like this internally:
 ```text
 +----------------------+
 |     Redis Server     |
-|-----------------------|
-| Memory                |
-| Key-Value Storage      |
-| Command Processor      |
-| Network Listener        |
+|----------------------|
+| Memory               |
+| Key-Value Storage    |
+| Command Processor    |
+| Network Listener     |
 +----------------------+
 ```
 
