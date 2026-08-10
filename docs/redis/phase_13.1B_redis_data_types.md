@@ -204,4 +204,14 @@ MySQL owns the permanent business data — products, orders, users. Redis holds 
 | Email/task queue | List | `email_queue` |
 
 ---
-**Recap:** String = one value · List = ordered · Hash = object · Set = unique · Sorted Set = ranked · Stream = durable log · Pub/Sub = real-time, no memory · Array = index-addressed + ring buffer.
+**Recap:** 
+```
+· String = one value 
+· List = ordered 
+· Hash = object 
+· Set = unique 
+· Sorted Set = ranked 
+· Stream = durable log 
+· Pub/Sub = real-time, no memory 
+· Array = index-addressed + ring buffer.
+```
