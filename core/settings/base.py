@@ -255,3 +255,18 @@ X_FRAME_OPTIONS = "DENY"
 
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
+
+
+# Add Redis Configuration
+
+REDIS_URL = os.getenv(
+    "REDIS_URL",
+    "redis://127.0.0.1:6379/0"
+)
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": REDIS_URL,
+    }
+}
