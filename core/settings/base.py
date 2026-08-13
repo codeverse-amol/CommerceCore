@@ -264,6 +264,8 @@ REDIS_URL = os.getenv(
     "redis://127.0.0.1:6379/0"
 )
 
+CELERY_BROKER_URL = REDIS_URL
+
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
