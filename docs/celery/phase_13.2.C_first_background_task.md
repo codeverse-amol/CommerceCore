@@ -175,6 +175,7 @@ celery -A core worker -l INFO --pool=solo
 **Solution:**
 ```powershell
 docker ps
+docker start commercecore-redis 
 docker exec -it commercecore-redis redis-cli PING
 # Expect: PONG
 ```
