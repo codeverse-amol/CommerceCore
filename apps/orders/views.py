@@ -1,22 +1,27 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
-from apps.carts.views import get_or_create_cart
+from django.db import transaction
 
+from apps.carts.views import get_or_create_cart
 from apps.orders.models import Order, OrderItem
 from apps.accounts.models import Address
+from apps.orders.tasks import send_order_confirmation_email
+
+
 # Create your views here.
+
+# Implementing transaction.atomic() 
 
 @login_required
 def placed_orders(request):
 
     cart = get_or_create_cart(request.user)
-    cart_items = cart.items.all()   # type: ignore
+    cart_items = cart.items.all()  # type: ignore
 
     if not cart_items.exists():
         return redirect("my_orders")
-    
+
     for item in cart_items:
 
         if item.quantity > item.product.stock:
@@ -24,39 +29,101 @@ def placed_orders(request):
             return HttpResponse(
                 f"{item.product.name} only has {item.product.stock} items left"
             )
-        
+
     subtotal = sum(item.total_price for item in cart_items)
 
     address_id = request.POST.get("address_id")
+
     delivery_address = get_object_or_404(
         Address,
         id=address_id,
         user=request.user
     )
 
-    order = Order.objects.create(
-        user=request.user,
-        total_amount=subtotal,
-        delivery_address=delivery_address
-    )
+    with transaction.atomic():
 
-    for item in cart_items:
-
-        OrderItem.objects.create(
-            order=order,
-            product=item.product,
-            quantity=item.quantity,
-            price_at_purchase=item.product.price,
-            total_price=item.total_price
+        order = Order.objects.create(
+            user=request.user,
+            total_amount=subtotal,
+            delivery_address=delivery_address
         )
 
-        item.product.stock -= item.quantity
-        item.product.save()
+        for item in cart_items:
+
+            OrderItem.objects.create(
+                order=order,
+                product=item.product,
+                quantity=item.quantity,
+                price_at_purchase=item.product.price,
+                total_price=item.total_price
+            )
+
+            item.product.stock -= item.quantity
+            item.product.save()
+
+        cart_items.delete()
+
+        transaction.on_commit(
+            lambda: send_order_confirmation_email.delay(order.id)
+        )
+
+    return render(
+        request,
+        'orders/order_success.html',
+        {'order': order}
+    )
+
+
+
+# @login_required
+# def placed_orders(request):
+
+#     cart = get_or_create_cart(request.user)
+#     cart_items = cart.items.all()   # type: ignore
+
+#     if not cart_items.exists():
+#         return redirect("my_orders")
+    
+#     for item in cart_items:
+
+#         if item.quantity > item.product.stock:
+
+#             return HttpResponse(
+#                 f"{item.product.name} only has {item.product.stock} items left"
+#             )
+        
+#     subtotal = sum(item.total_price for item in cart_items)
+
+#     address_id = request.POST.get("address_id")
+#     delivery_address = get_object_or_404(
+#         Address,
+#         id=address_id,
+#         user=request.user
+#     )
+
+#     order = Order.objects.create(
+#         user=request.user,
+#         total_amount=subtotal,
+#         delivery_address=delivery_address
+#     )
+
+#     for item in cart_items:
+
+#         OrderItem.objects.create(
+#             order=order,
+#             product=item.product,
+#             quantity=item.quantity,
+#             price_at_purchase=item.product.price,
+#             total_price=item.total_price
+#         )
+
+#         item.product.stock -= item.quantity
+#         item.product.save()
         
 
-    cart_items.delete()
+#     cart_items.delete()
 
-    return render(request, 'orders/order_success.html', {'order': order})
+#     return render(request, 'orders/order_success.html', {'order': order})
 
 
 
