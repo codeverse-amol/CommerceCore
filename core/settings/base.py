@@ -15,7 +15,6 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR points to the project root (CommerceCore/)
 # File location: core/settings/base.py
@@ -35,9 +34,7 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 if not SECRET_KEY:
-    raise RuntimeError(
-        "SECRET_KEY environment variable is not set."
-    )
+    raise RuntimeError("SECRET_KEY environment variable is not set.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # Do not define DEBUG here
@@ -45,7 +42,7 @@ if not SECRET_KEY:
 
 # Moved this to each environment i.e development and production.
 # ALLOWED_HOSTS = [
-#     host.strip() 
+#     host.strip()
 #     for host in os.getenv("ALLOWED_HOSTS", "").split(",")
 #     if host.strip()
 # ]
@@ -204,19 +201,11 @@ REST_FRAMEWORK = {
 }
 
 
-
-
 SPECTACULAR_SETTINGS = {
-
     "TITLE": "CommerceCore API",
-
     "DESCRIPTION": "E-commerce REST API using Django REST Framework",
-
     "VERSION": "1.0.0",
-
 }
-
-
 
 
 # Logging
@@ -256,13 +245,9 @@ X_FRAME_OPTIONS = "DENY"
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 
-
 # Add Redis Configuration
 
-REDIS_URL = os.getenv(
-    "REDIS_URL",
-    "redis://127.0.0.1:6379/0"
-)
+REDIS_URL = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
 
 CELERY_BROKER_URL = REDIS_URL
 
