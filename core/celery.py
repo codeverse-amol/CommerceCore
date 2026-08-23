@@ -28,4 +28,12 @@ app.conf.beat_schedule = {
         "task": "apps.main.tasks.scheduled_hello_task",
         "schedule": 60.0
     },
+
+    "run-daily-cleanup": {
+        "task": "apps.main.tasks.daily_cleanup",
+        "schedule": 60.0
+    }
 }
+
+
+
