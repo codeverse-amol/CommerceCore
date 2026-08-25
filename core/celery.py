@@ -17,8 +17,6 @@ app.config_from_object(
 app.autodiscover_tasks()
 
 
-
-
 # Configure Celery Beat
 from celery.schedules import crontab
 
@@ -39,8 +37,9 @@ app.conf.beat_schedule = {
         "schedule": 60.0,
     },
 
-
+    "run-daily-reports": {
+        "task": "apps.main.tasks.daily_reports",
+        "schedule": 60.0
+    },
+    
 }
-
-
-

@@ -2,9 +2,11 @@ from celery import shared_task
 from django.core.management import call_command
 from django.utils import timezone
 from datetime import timedelta
-
+from django.db.models import Sum, Count
 
 from apps.carts.models import CartItem
+from apps.orders.models import Order
+
 
 # @shared_task
 # def hello_task():
@@ -50,3 +52,70 @@ def expired_cart_cleanup():
 
     print(f"Deleted {deleted_count} expired cart items.")
     print("Expired cart cleanup completed.")
+
+
+
+@shared_task
+def daily_reports():
+    print("Daily report task started")
+
+    today = timezone.localdate()
+
+    # All orders created today
+    todays_orders = Order.objects.filter(
+        created_at__date=today,
+    )
+
+    # Total number of orders
+    total_orders = todays_orders.count()
+
+    # Cancelled orders
+    cancelled_orders = todays_orders.filter(
+        status="CANCELLED"
+    ).count()
+
+    # Pending orders
+    pending_orders = todays_orders.filter(
+        status="PENDING"
+    ).count()
+
+    # Delivered orders
+    delivered_orders = todays_orders.filter(
+        status="DELIVERED"
+    ).count()
+
+    # Sales = all non-cancelled orders
+    # sales = todays_orders.exclude(
+    #     status="CANCELLED"
+    # ).aggregate(
+    #     total=Sum("total_amount")
+    # )["total"] or 0
+
+    sales = todays_orders.filter(status="DELIVERED").aggregate(
+        total=Sum("total_amount")
+    )["total"] or 0
+
+    # Status-wise order counts
+    status_counts = todays_orders.values(
+        "status"
+    ).annotate(
+        count=Count("id")
+    )
+
+    print("================================")
+    print(f"Daily CommerceCore Report - {today}")
+    print("================================")
+    print(f"Total orders: {total_orders}")
+    print(f"Cancelled orders: {cancelled_orders}")
+    print(f"Pending orders: {pending_orders}")
+    print(f"Delivered orders: {delivered_orders}")
+    print(f"Today's sales: ₹{sales}")
+
+
+    print("Order status:")
+    for item in status_counts:
+        print(
+            f"{item['status']}: {item['count']}"
+        )
+
+    print("Daily report task completed.")
