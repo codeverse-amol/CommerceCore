@@ -23,7 +23,7 @@ CommerceCore is now in a mature implementation stage with:
 - HTML/CSS templates with static/media handling
 - AWS S3-compatible media storage support
 - Nginx + Gunicorn for production deployment
-
+- Redis and Celery
 ## Project structure
 
 ```text
