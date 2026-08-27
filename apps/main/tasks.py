@@ -84,13 +84,7 @@ def daily_reports():
         status="DELIVERED"
     ).count()
 
-    # Sales = all non-cancelled orders
-    # sales = todays_orders.exclude(
-    #     status="CANCELLED"
-    # ).aggregate(
-    #     total=Sum("total_amount")
-    # )["total"] or 0
-
+    # Sales = only delivered orders
     sales = todays_orders.filter(status="DELIVERED").aggregate(
         total=Sum("total_amount")
     )["total"] or 0
