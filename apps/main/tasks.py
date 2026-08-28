@@ -27,7 +27,6 @@ def daily_session_cleanup():
     print("Expired Django sessions cleaned up.")
 
 
-
 @shared_task
 def expired_cart_cleanup():
     print("Expired cart cleanup started.")
@@ -42,7 +41,6 @@ def expired_cart_cleanup():
 
     print(f"Deleted {deleted_count} expired cart items.")
     print("Expired cart cleanup completed.")
-
 
 
 @shared_task
@@ -60,31 +58,24 @@ def daily_reports():
     total_orders = todays_orders.count()
 
     # Cancelled orders
-    cancelled_orders = todays_orders.filter(
-        status="CANCELLED"
-    ).count()
+    cancelled_orders = todays_orders.filter(status="CANCELLED").count()
 
     # Pending orders
-    pending_orders = todays_orders.filter(
-        status="PENDING"
-    ).count()
+    pending_orders = todays_orders.filter(status="PENDING").count()
 
     # Delivered orders
-    delivered_orders = todays_orders.filter(
-        status="DELIVERED"
-    ).count()
+    delivered_orders = todays_orders.filter(status="DELIVERED").count()
 
     # Sales = only delivered orders
-    sales = todays_orders.filter(status="DELIVERED").aggregate(
-        total=Sum("total_amount")
-    )["total"] or 0
+    sales = (
+        todays_orders.filter(status="DELIVERED").aggregate(total=Sum("total_amount"))[
+            "total"
+        ]
+        or 0
+    )
 
     # Status-wise order counts
-    status_counts = todays_orders.values(
-        "status"
-    ).annotate(
-        count=Count("id")
-    )
+    status_counts = todays_orders.values("status").annotate(count=Count("id"))
 
     print("================================")
     print(f"Daily CommerceCore Report - {today}")
@@ -95,11 +86,8 @@ def daily_reports():
     print(f"Delivered orders: {delivered_orders}")
     print(f"Today's sales: ₹{sales}")
 
-
     print("Order status:")
     for item in status_counts:
-        print(
-            f"{item['status']}: {item['count']}"
-        )
+        print(f"{item['status']}: {item['count']}")
 
     print("Daily report task completed.")
