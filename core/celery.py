@@ -22,24 +22,19 @@ from celery.schedules import crontab
 
 
 app.conf.beat_schedule = {
-    "run-scheduled-hello-every-minute": {
-        "task": "apps.main.tasks.scheduled_hello_task",
-        "schedule": 60.0,
-    },
-
-    "run-daily-cleanup": {
-        "task": "apps.main.tasks.daily_cleanup",
-        "schedule": 60.0,
+    "run-daily-session-cleanup": {
+        "task": "apps.main.tasks.daily_session_cleanup",
+        "schedule": crontab(hour=2, minute=0),
     },
 
     "run-expired-cart-cleanup": {
         "task": "apps.main.tasks.expired_cart_cleanup",
-        "schedule": 60.0,
+        "schedule": crontab(hour=2, minute=0),
     },
 
     "run-daily-reports": {
         "task": "apps.main.tasks.daily_reports",
-        "schedule": 60.0
+        "schedule": crontab(hour=2, minute=0)
     },
     
 }
