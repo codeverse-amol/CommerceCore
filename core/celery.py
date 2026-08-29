@@ -39,8 +39,7 @@ app.conf.beat_schedule = {
 
     "run-low_stock-notification": {
         "task": "apps.products.tasks.low_stock_notification",
-        "schedule": 60,
-        # "schedule": crontab(hour=8, minute=0),
+        "schedule": crontab(hour=8, minute=0),
     },
     
 }
