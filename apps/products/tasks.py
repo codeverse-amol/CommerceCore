@@ -100,25 +100,3 @@ def low_stock_notification():
         f"Low-stock notification email sent for "
         f"{len(products_to_notify)} product(s)."
     )
-
-
-@shared_task(bind=True, max_retries=3)
-def retry_demo(self):
-    print("Executing retry_demo")
-
-    try:
-        raise Exception("Demo failure")
-
-    except Exception as exc:
-        raise self.retry(exc=exc, countdown=5)
-
-
-
-@shared_task
-def countdown_demo():
-    print("Countdown task executed!")    
-
-
-@shared_task
-def eta_demo():
-    print("ETA task executed!")    
