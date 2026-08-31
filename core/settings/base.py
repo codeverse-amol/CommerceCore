@@ -60,7 +60,8 @@ INSTALLED_APPS = [
     # Local apps
     "apps.main",
     "apps.accounts",
-    "apps.products",
+    # "apps.products", 
+    "apps.products.apps.ProductsConfig", # "Load ProductsConfig → run ready() → load signals." ✅
     "apps.carts",
     "apps.orders",
     "apps.common",
