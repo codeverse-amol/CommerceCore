@@ -1,29 +1,27 @@
 # CommerceCore
 
-CommerceCore is a backend-focused e-commerce platform built with Django and Django REST Framework. The project currently includes core storefront features, authentication, product management, cart and order flows, and deployment-ready configuration for both development and production environments.
+CommerceCore is a production-ready e-commerce platform built with Django and Django REST Framework. The system provides complete storefront functionality, user authentication, product management, shopping cart, order processing, and cloud-based deployment infrastructure.
 
-## Current project status
+## Features & Capabilities
 
-CommerceCore is now in a mature implementation stage with:
-
-- Django-based user authentication and profile management
-- Product catalog, search, and CRUD workflows
-- Shopping cart and order processing flow
-- Separate development and production settings
-- Production deployment setup with Nginx, Gunicorn, AWS EC2, and GitHub Actions
-- Environment-based configuration for secrets and server settings
-- API app structure for upcoming DRF expansion
+- **User Management:** Registration, login, profile management, session handling
+- **Product Catalog:** Full CRUD operations, image uploads, search functionality, category filtering
+- **Shopping Cart:** Item management, quantity tracking, persistent cart storage
+- **Order Processing:** Order placement, status tracking, order history and details
+- **REST API:** DRF endpoints with serializers and permission classes
+- **Cloud Storage:** AWS S3 integration for media files with secure IAM access
+- **Production Deployment:** Nginx reverse proxy, Gunicorn application server, GitHub Actions CI/CD
 
 ## Tech stack
 
-- Python 3.10+
-- Django
-- Django REST Framework
-- MySQL/PostgreSQL-compatible database support
-- HTML/CSS templates with static/media handling
-- AWS S3-compatible media storage support
-- Nginx + Gunicorn for production deployment
-- Redis and Celery
+- **Backend:** Python 3.10+, Django 6.0+, Django REST Framework
+- **Database:** MySQL/MariaDB (RDS-compatible)
+- **Frontend:** HTML5, CSS3, Django templates
+- **Task Queue:** Celery + Redis
+- **Storage:** AWS S3 with django-storages and boto3
+- **Deployment:** Nginx (reverse proxy), Gunicorn (app server)
+- **Infrastructure:** AWS EC2
+- **CI/CD:** GitHub Actions
 ## Project structure
 
 ```text
@@ -99,21 +97,43 @@ python manage.py test
 
 The project is configured for production deployment using:
 
-- Nginx as a reverse proxy
-- Gunicorn as the application server
-- AWS EC2 hosting
-- GitHub Actions-based deployment automation
+- **Reverse Proxy:** Nginx on port 80/443, routing `/static/`, `/media/`, and Django requests
+- **Application Server:** Gunicorn with systemd service management
+- **Hosting:** AWS EC2 instance
+- **Deployment Automation:** GitHub Actions with SSH deployment to EC2
+- **Media Storage:** AWS S3 for scalable file storage
+- **Error Handling:** Custom 404 & 500 pages, production logging
 
-Additional deployment documentation is available in the `docs/` and `docs-o/` folders.
+**Production Architecture:**
+```
+Internet → Nginx → Gunicorn → Django → MariaDB
+                 ↓
+              S3 Bucket (media)
+```
 
-## Next steps
+## Cloud Storage & Media Handling
 
-Planned improvements include:
+CommerceCore uses AWS S3 for secure, scalable media storage. The system is configured with:
 
-- Expanding the REST API endpoints
-- Improving checkout and payment integration
-- Performance tuning and caching
-- Further UI and admin enhancements
+- S3 bucket with secure IAM user access (least-privilege policy)
+- django-storages and boto3 for seamless Django integration
+- Automatic media upload and retrieval from S3
+- CloudFront CDN for optimized media delivery
+
+Environment configuration for S3 is handled through `.env` variables:
+
+```env
+AWS_ACCESS_KEY_ID=your-iam-access-key
+AWS_SECRET_ACCESS_KEY=your-iam-secret-key
+AWS_STORAGE_BUCKET_NAME=your-bucket-name
+AWS_S3_REGION_NAME=us-east-1
+```
+
+## Future Enhancements
+
+- Payment gateway integration
+- Advanced analytics and reporting
+- Performance optimization and caching improvements
 
 ## License
 
