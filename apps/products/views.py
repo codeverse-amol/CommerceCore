@@ -11,12 +11,14 @@ from apps.products.models import Product, Review
 # from django.contrib.auth.models import User
 
 from django.core.paginator import Paginator
+from time import perf_counter
 
 # Create your views here.
 
 
 @login_required
 def list_products(request):
+    start_time = perf_counter()
 
     query = request.GET.get("q", "")
     page_number = request.GET.get("page", "1")
@@ -31,7 +33,12 @@ def list_products(request):
     cached_response = cache.get(cache_key)
 
     if cached_response is not None:
-        print("CACHE HIT:", cache_key)
+        elapsed = (perf_counter() - start_time) * 1000
+
+        print(
+            f"CACHE HIT: {cache_key} | "
+            f"{elapsed:.2f} ms"
+        )
         return HttpResponse(cached_response)
 
     # --------------------------------------------------
@@ -74,9 +81,17 @@ def list_products(request):
         300,  # 5 minutes
     )
 
-    print("CACHE SET:", cache_key)
+    elapsed = (perf_counter() - start_time) * 1000
+
+    print(
+        f"CACHE SET: {cache_key} | "
+        f"{elapsed:.2f} ms"
+    )
+
 
     return response
+
+
 
 
 def product_detail(request, id):
