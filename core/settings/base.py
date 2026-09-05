@@ -41,11 +41,11 @@ if not SECRET_KEY:
 
 
 # Moved this to each environment i.e development and production.
-# ALLOWED_HOSTS = [
-#     host.strip()
-#     for host in os.getenv("ALLOWED_HOSTS", "").split(",")
-#     if host.strip()
-# ]
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv("ALLOWED_HOSTS", "").split(",")
+    if host.strip()
+]
 
 
 # Application definition
