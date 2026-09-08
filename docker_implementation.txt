@@ -1,0 +1,40 @@
+Consistent local + EC2 deployment, our target will be:
+
+CommerceCore
+│
+├── Dockerfile              ← Django/Gunicorn image
+├── docker-compose.yml      ← Django + MySQL + Redis + Celery + Nginx
+├── .dockerignore
+├── .env                    ← environment-specific values
+└── ...
+
+
+With Docker Compose, our target architecture becomes:
+
+                    EC2
+                     │
+                   Docker
+                     │
+       ┌─────────────┼──────────────┐
+       │             │              │
+       ▼             ▼              ▼
+    Nginx          Django          Redis
+  container       container       container
+                     │
+                     ▼
+                   MySQL
+                  container
+                     │
+                     ▼
+                  Volume
+
+
+And Celery will also be included:
+
+                    Redis
+                   /     \
+                  /       \
+                 ▼         ▼
+             Django      Celery
+
+This gives us a much more consistent environment.
