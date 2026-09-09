@@ -38,3 +38,30 @@ And Celery will also be included:
              Django      Celery
 
 This gives us a much more consistent environment.
+
+
+
+
+After adding Nginx to docker-compose.yml architecture becomes:
+
+Browser
+   │
+   │ :80
+   ▼
+┌──────────────┐
+│    Nginx     │
+│   Container  │
+└──────┬───────┘
+       │ :8000
+       ▼
+┌──────────────┐
+│    Django    │
+│   Gunicorn   │
+└──────┬───────┘
+       │
+   ┌───┴────┐
+   ▼        ▼
+ MySQL    Redis
+             │
+             ▼
+           Celery
