@@ -1,0 +1,40 @@
+services:
+
+  web:
+    build: .
+    container_name: commercecore-web
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql:8.0
+    container_name: commercecore-mysql
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:8-alpine
+    container_name: commercecore-redis
+
+  celery:
+    build: .
+    container_name: commercecore-celery
+    env_file:
+      - .env
+    command: celery -A core worker --loglevel=info
+    depends_on:
+      - redis
+      - mysql
+    
+volumes:
+  mysql_data:
