@@ -65,3 +65,79 @@ Browser
              │
              ▼
            Celery
+
+
+
+
+
+So our architecture is now:
+
+
+                    Docker Compose
+                         │
+              ┌──────────┴──────────┐
+              │                     │
+          Nginx :80             Internal network
+              │                     │
+       ┌──────┴──────┐       ┌──────┴───────┐
+       │             │       │              │
+   /static/      /media/    Web :8000     Other
+       │             │       │
+       ▼             ▼       ▼
+ static_volume   media_volume  Gunicorn
+                              │
+                         ┌────┴────┐
+                         │         │
+                       MySQL     Redis
+                                   │
+                                 Celery
+
+
+
+
+
+
+
+                    Browser
+                       │
+                    Port 80
+                       │
+                       ▼
+                  ┌─────────┐
+                  │  Nginx  │
+                  └────┬────┘
+                       │
+              ┌────────┴────────┐
+              │                 │
+        Static / Media       proxy_pass
+              │                 │
+              ▼                 ▼
+       static_volume        Django Web
+       ./media (ro)        :8000
+                                  │
+                         ┌────────┼────────┐
+                         ▼        ▼        ▼
+                       MySQL    Redis    Celery
+
+
+What we've verified
+- ✅ Django web container
+- ✅ MySQL container
+- ✅ Redis container
+- ✅ Celery worker
+- ✅ Nginx reverse proxy
+- ✅ Static files through Nginx
+- ✅ Existing media files through Nginx
+- ✅ MySQL persistence through mysql_data
+- ✅ No need to expose Django port publicly through Nginx architecture
+
+| Component | Status |
+|---|---|
+| Django Web | ✅ |
+| MySQL | ✅ |
+| Redis | ✅ |
+| Celery | ✅ |
+| Nginx reverse proxy | ✅ |
+| Static files via Nginx | ✅ |
+| Media files via Nginx | ✅ |
+| Docker Compose | ✅ |
