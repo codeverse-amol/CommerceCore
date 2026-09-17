@@ -3,6 +3,15 @@ from .base import *
 DEBUG = False
 
 
+# Security
+
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+
+
 # --------------------------------------------------
 # Production Settings
 # --------------------------------------------------

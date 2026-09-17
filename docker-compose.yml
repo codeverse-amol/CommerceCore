@@ -6,6 +6,9 @@ services:
     env_file:
       - .env
 
+    environment:
+      DJANGO_SETTINGS_MODULE: core.settings.production
+
     volumes:
       - static_volume:/app/staticfiles
       - ./media:/app/media
