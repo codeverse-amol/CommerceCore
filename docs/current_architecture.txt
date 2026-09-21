@@ -1,0 +1,67 @@
+                  CURRENT EC2
+
+       +---------------------------+
+       |           EC2             |
+       |                           |
+       | Nginx                     |
+       |   ↓                       |
+       | Gunicorn → Django         |
+       |                           |
+       | MariaDB :3306  ← old     |
+       +-------------+-------------+
+                     |
+                     | DB_HOST
+                     v
+              +-------------+
+              |     RDS     |
+              |   MySQL     |
+              +-------------+
+
+
+
+Current situation
+
+EC2
+│
+├── Nginx (host)
+│
+├── Gunicorn (host)
+│     └── Django
+│
+├── MariaDB (host) ← old, currently running
+│
+└───────────────► RDS MySQL ← actual CommerceCore DB
+
+
+
+We'll clean that up only after the Docker deployment is successfully working.
+
+Now we can start Docker
+
+Our migration will be:
+
+CURRENT
+────────────────────────────
+
+EC2
+ ├── Nginx
+ ├── Gunicorn
+ ├── Django
+ ├── MariaDB (old)
+ └── venv
+
+              ↓
+
+DOCKERIZED
+────────────────────────────
+
+EC2
+ └── Docker
+      ├── Nginx container
+      ├── Django/Gunicorn container
+      ├── Celery container
+      └── Redis container
+             |
+             +----> RDS MySQL
+             |
+             +----> S3
